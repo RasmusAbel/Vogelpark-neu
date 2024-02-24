@@ -36,8 +36,6 @@ public class AttractionsInitializer {
 
     public void initialize() {
         if(attractionRepository.count() <= 0) {
-            filterTagRepository.save(new FilterTag("Natur"));
-            filterTagRepository.save(new FilterTag("Familie"));
 
             OpeningHours aOpeningHours = new OpeningHours("Täglich", "10:00", "17:00");
             openingHoursRepository.save(aOpeningHours);
@@ -61,7 +59,12 @@ public class AttractionsInitializer {
             c.setName("Lehrpfad");
             c.setDescription("Gehen Sie bitte.");
             c.getOpeningHours().add(cOpeningHours);
+            a.getFilterTags().add(tagService.findOrSaveNewTag("Natur"));
             attractionRepository.save(c);
+
+            for(String tag : tagService.getAllTags()) {
+                logger.info("Neuer Tag hinzugefügt: " + tag);
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 package de.bird.vogelpark;
 
+import de.bird.vogelpark.initializer.AttractionsInitializer;
 import de.bird.vogelpark.initializer.BirdParkBasicInfoDBInitializer;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,13 +17,18 @@ public class BirdParkApplication implements CommandLineRunner {
 
 	BirdParkBasicInfoDBInitializer birdParkBasicInfoDBInitializer;
 
-	public BirdParkApplication(BirdParkBasicInfoDBInitializer birdParkBasicInfoDBInitializer) {
+	AttractionsInitializer attractionsInitializer;
+
+	public BirdParkApplication(BirdParkBasicInfoDBInitializer birdParkBasicInfoDBInitializer,
+							   AttractionsInitializer attractionsInitializer) {
 		this.birdParkBasicInfoDBInitializer = birdParkBasicInfoDBInitializer;
+		this.attractionsInitializer = attractionsInitializer;
 	}
 
 	public void run(String... args) {
 		logger.info("BirdParkApplication has been started...");
 		birdParkBasicInfoDBInitializer.initialize();
+		attractionsInitializer.initialize();
 	}
 
 }

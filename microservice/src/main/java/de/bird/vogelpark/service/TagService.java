@@ -28,14 +28,14 @@ public class TagService {
                 .orElseGet(() -> filterTagRepository.save(new FilterTag(tagName)));
     }
 
-    public List<FilterTag> getAllTags() {
+    public List<String> getAllTags() {
         List<FilterTag> allTags = new ArrayList<>();
 
         for(FilterTag tag : filterTagRepository.findAll()) {
             allTags.add(tag);
         }
 
-        return allTags;
+        return mapData2Response(allTags);
     }
 
     /**
@@ -47,5 +47,13 @@ public class TagService {
      */
     public boolean existsTag(String tagName) {
         return filterTagRepository.findByName(tagName).isPresent();
+    }
+
+    public List<String> mapData2Response(List<FilterTag> data) {
+        List<String> response = new ArrayList<>();
+        for(FilterTag tag : data) {
+            response.add(tag.getName());
+        }
+        return response;
     }
 }
