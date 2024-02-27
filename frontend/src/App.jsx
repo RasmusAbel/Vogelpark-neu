@@ -1,4 +1,10 @@
 import React from 'react';
+import HomePage from './Pages/HomePage';
+import AttractionsPage from './Pages/AttractionsPage';
+import ToursPage from './Pages/ToursPage';
+
+// Platzhalter für das Bild
+const backgroundImageUrl = 'placeholder_image.jpg';
 
 class App extends React.Component {
   constructor(props) {
@@ -8,38 +14,34 @@ class App extends React.Component {
       textFields: {
         Name: '',
         Adresse: '',
-        //Zeiten: '',
-       // Preise: '',
         Beschreibung: ''
       }
     };
   }
 
- componentDidMount() {
-   // Hier sendest du eine AJAX-Anfrage, um Daten von der REST-API abzurufen
-   fetch('http://localhost:8080/bird-park-basic-info/')
-     .then(response => response.json())
-     .then(data => {
-       // Extrahiere die relevanten Daten und aktualisiere den Zustand
-       const { name, address, description } = data;
-       this.setState({
-         textFields: {
-           ...this.state.textFields,
-           Name: name,
-           Adresse: address,
-           Beschreibung: description
-         }
-       });
+  componentDidMount() {
+    // Hier senden Sie eine AJAX-Anfrage, um Daten von der REST-API abzurufen
+    fetch('http://localhost:8080/bird-park-basic-info/')
+      .then(response => response.json())
+      .then(data => {
+        // Extrahieren der relevanten Daten und Aktualisieren des Zustands
+        const { name, address, description } = data;
+        this.setState({
+          textFields: {
+            ...this.state.textFields,
+            Name: name,
+            Adresse: address,
+            Beschreibung: description
+          }
+        });
 
-       // Ausgabe des aktualisierten Zustands in die Konsole
-       console.log(this.state.textFields);
-     })
-     .catch(error => {
-       console.error('Fehler beim Abrufen der Daten:', error);
-     });
- }
-
-
+        // Ausgabe des aktualisierten Zustands in die Konsole
+        console.log(this.state.textFields);
+      })
+      .catch(error => {
+        console.error('Fehler beim Abrufen der Daten:', error);
+      });
+  }
 
   gotoPage = (page) => {
     this.setState({ currentPage: page });
@@ -49,40 +51,27 @@ class App extends React.Component {
     const { currentPage, textFields } = this.state;
     return (
       <div style={{ position: 'relative' }}>
-        {/* Leiste am oberen Bildschirmrand */}
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, backgroundColor: '#24524a', padding: '10px', display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
-          <img src="home_button.png" alt="Home" style={{ width: '50px', height: '50px', cursor: 'pointer' }} onClick={() => this.gotoPage(null)} />
-          <button style={{ cursor: 'pointer', marginLeft: '50px', color: '#ffffff', backgroundColor: '#ffffff1a', border: 'none', borderRadius: '5px', padding: '5px 10px' }} onClick={() => this.gotoPage('Attraktionen')}>Attraktionen</button>
-          <button style={{ cursor: 'pointer', marginLeft: '50px', color: '#ffffff', backgroundColor: '#ffffff1a', border: 'none', borderRadius: '5px', padding: '5px 10px' }} onClick={() => this.gotoPage('Touren')}>Touren</button>
+        {/* Bild als Hintergrund für die obere Leiste */}
+        <div style={{ 
+          backgroundImage: `url(https://www.restaurant-vogelpark-berghausen.de/uploads/w2hlKvG7/767x0_2000x0/voegel-hintergrund.png)`, 
+          backgroundSize: 'cover', 
+          position: 'fixed', top: 0, left: 0, right: 0,
+          backgroundColor: '#000000',
+          height: '100px', 
+          width: '100%', 
+          display: 'flex', 
+          alignItems: 'center', 
+          padding: '0 20px' 
+        }}>
+          <button style={{ position: 'fixed', top: '25px', left: 'calc(50% + -300px)', width: '100px', height: '50px', cursor: 'pointer', marginLeft: '20px', color: '#ffffff', backgroundColor: '#1C7F00', border: 'none', borderRadius: '5px', padding: '5px 10px' }} onClick={() => this.gotoPage(null)}>Home</button>
+          <button style={{ position: 'fixed', top: '25px', left: '50%', transform: 'translateX(-50%)', height: '50px', cursor: 'pointer', marginLeft: '20px', color: '#ffffff', backgroundColor: '#1C7F00', border: 'none', borderRadius: '5px', padding: '5px 10px' }} onClick={() => this.gotoPage('Attraktionen')}>Attraktionen</button>
+          <button style={{ position: 'fixed', top: '25px', left: 'calc(50% + 200px)', width: '100px', height: '50px', cursor: 'pointer', marginLeft: '20px', color: '#ffffff', backgroundColor: '#1C7F00', border: 'none', borderRadius: '5px', padding: '5px 10px' }} onClick={() => this.gotoPage('Touren')}>Touren</button>
         </div>
 
-        {currentPage === null && (
-          <div>
-            <img src="logo.png" alt="Home logo" style={{ position: 'absolute', top: '-250px', left: '20px', width: '150px', height: '150px', marginBottom: '200px' }} />
-            <div>
-              {Object.entries(textFields).map(([key, value], index) => (
-                <div
-                  key={index}
-                  style={{ position: 'absolute', top: `${50 + index * 50}px`, left: '500px', fontSize: '16px', color: 'black' }}
-                >
-                  <div>{key}: {value}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {currentPage === 'Attraktionen' && (
-          <div>
-            <p style={{ position: 'absolute', top: '-300px', left: '20px', fontSize: '24px', color: '#FFFFFFFF' }}>Attraktionen</p>
-          </div>
-        )}
-
-        {currentPage === 'Touren' && (
-          <div>
-            <p style={{ position: 'absolute', top: '-300px', left: '20px', fontSize: '24px', color: '#FFFFFFFF' }}>Touren</p>
-          </div>
-        )}
+        {/* Seiteninhalte basierend auf dem aktuellen Seitenzustand anzeigen */}
+        {currentPage === null && <HomePage textFields={textFields} />}
+        {currentPage === 'Attraktionen' && <AttractionsPage />}
+        {currentPage === 'Touren' && <ToursPage />}
       </div>
     );
   }
