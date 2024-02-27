@@ -18,12 +18,12 @@ public class OpeningHours {
     @Column
     private String endTime;
 
-    @ManyToOne(optional = true)
+    @ManyToOne(optional = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "bird_park_id")
     //Fremdschlüssel auf den Vogelpark, dessen Öffnungszeiten angegeben werden
     private BirdParkBasicInfo birdParkInfo;
 
-    @ManyToOne(optional = true)
+    @ManyToOne(optional = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "attraction_id")
     //ODER Fremdschlüssel auf die Attraktion, deren Öffnungszeiten angegeben werden
     private Attraction attraction;

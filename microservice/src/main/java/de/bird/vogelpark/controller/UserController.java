@@ -1,6 +1,5 @@
 package de.bird.vogelpark.controller;
 
-import de.bird.vogelpark.dto.FilterTagResponse;
 import de.bird.vogelpark.dto.ReadAttractionsByTagsResponse;
 import de.bird.vogelpark.dto.BirdParkBasicInfoResponse;
 import de.bird.vogelpark.service.AttractionsService;

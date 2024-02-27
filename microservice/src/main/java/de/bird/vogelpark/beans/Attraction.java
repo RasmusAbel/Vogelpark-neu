@@ -23,8 +23,11 @@ public class Attraction {
     @OneToMany(mappedBy = "attraction", cascade = CascadeType.ALL)
     private List<OpeningHours> openingHours = new ArrayList<>();
 
-    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-    @JoinTable(name = "attraction_tags", joinColumns = @JoinColumn(name = "attraction_id"), inverseJoinColumns = @JoinColumn(name = "filter_tag_id"))
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(name = "attraction_tags",
+            joinColumns = @JoinColumn(name = "attraction_id"),
+            inverseJoinColumns = @JoinColumn(name = "filter_tag_id")
+    )
     private Set<FilterTag> filterTags = new HashSet<>();
 
     public Long getId() {
@@ -61,6 +64,7 @@ public class Attraction {
                 "id: " + id +
                 ", name: " + name +
                 ", description: " + description +
+                ", opening hours length: " + openingHours.size() +
                 "]";
     }
 }

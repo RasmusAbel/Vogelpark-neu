@@ -35,32 +35,49 @@ public class AttractionsInitializer {
     }
 
     public void initialize() {
-        if(attractionRepository.count() <= 0) {
+        if(attractionRepository.count() < 1) {
 
-            OpeningHours aOpeningHours = new OpeningHours("Täglich", "10:00", "17:00");
-            openingHoursRepository.save(aOpeningHours);
             Attraction a = new Attraction();
             a.setName("Aussichtsturm");
             a.setDescription("Gute Aussichten für Sie.");
+
+            OpeningHours aOpeningHours = new OpeningHours("Täglich", "10:00", "17:00", null, a);
+            //aOpeningHours.setAttraction(a);
             a.getOpeningHours().add(aOpeningHours);
+
+            openingHoursRepository.save(aOpeningHours);
             attractionRepository.save(a);
 
-            OpeningHours bOpeningHours = new OpeningHours("Täglich", "9:00", "17:00");
-            openingHoursRepository.save(bOpeningHours);
+
+
             Attraction b = new Attraction();
             b.setName("Flugkäfig");
             b.setDescription("Die können zwar fliegen, aber nicht abhauen.");
+
+            OpeningHours bOpeningHours = new OpeningHours("Täglich", "9:00", "17:00", null, b);
+            //bOpeningHours.setAttraction(b);
             b.getOpeningHours().add(bOpeningHours);
+
+            openingHoursRepository.save(bOpeningHours);
             attractionRepository.save(b);
 
-            OpeningHours cOpeningHours = new OpeningHours("Täglich", "9:00", "17:00");
-            openingHoursRepository.save(cOpeningHours);
+
+
             Attraction c = new Attraction();
             c.setName("Lehrpfad");
             c.setDescription("Gehen Sie bitte.");
+
+            OpeningHours cOpeningHours = new OpeningHours("Täglich", "9:00", "17:00", null, c);
+            //cOpeningHours.setAttraction(c);
             c.getOpeningHours().add(cOpeningHours);
-            a.getFilterTags().add(tagService.findOrSaveNewTag("Natur"));
+
+            FilterTag naturTag = tagService.findOrCreateNewTag("Natur");
+            filterTagRepository.save(naturTag);
+            naturTag.getAttractions().add(c);
+            c.getFilterTags().add(naturTag);
+
             attractionRepository.save(c);
+            openingHoursRepository.save(cOpeningHours);
 
             for(String tag : tagService.getAllTags()) {
                 logger.info("Neuer Tag hinzugefügt: " + tag);

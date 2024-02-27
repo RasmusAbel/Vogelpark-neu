@@ -7,7 +7,7 @@ public class BirdParkBasicInfoResponse {
     private String name;
     private String description;
     private String address;
-    private List<OpeningHoursResponse> openingHoursResponses = new ArrayList<>();
+    private final List<OpeningHoursResponse> openingHoursResponses = new ArrayList<>();
 
     public void setName(String name) {
         this.name = name;

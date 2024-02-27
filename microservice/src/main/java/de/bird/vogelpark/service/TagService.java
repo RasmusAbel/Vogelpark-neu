@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Filter;
 
 @Service
@@ -19,13 +20,23 @@ public class TagService {
     /**
      * Gibt das FilterTag-Objekt zu dem tagName zurück. Wenn
      * noch kein passender FilterTag in der DB existiert, wird
-     * ein neuer in der DB gespeichert und zurückgegeben.
+     * ein neuer erzeugt und zurückgegeben.
      * @param tagName
      * @return Der gefundene oder erzeugte FilterTag
      **/
-    public FilterTag findOrSaveNewTag(String tagName) {
-        return filterTagRepository.findByName(tagName)
-                .orElseGet(() -> filterTagRepository.save(new FilterTag(tagName)));
+    public FilterTag findOrCreateNewTag(String tagName) {
+        //return filterTagRepository.findByName(tagName)
+        //        .orElseGet(() -> filterTagRepository.save(new FilterTag(tagName)));
+
+        Optional<FilterTag> foundTag = filterTagRepository.findByName(tagName);
+
+        if(foundTag.isPresent()) {
+            return foundTag.get();
+        }
+
+        FilterTag newTag = new FilterTag();
+        newTag.setName(tagName);
+        return newTag;
     }
 
     public List<String> getAllTags() {

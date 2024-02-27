@@ -5,6 +5,7 @@ import de.bird.vogelpark.beans.BirdParkBasicInfo;
 import de.bird.vogelpark.dto.OpeningHoursResponse;
 import de.bird.vogelpark.dto.BirdParkBasicInfoResponse;
 import de.bird.vogelpark.repositories.BirdParkBasicDataRepository;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service

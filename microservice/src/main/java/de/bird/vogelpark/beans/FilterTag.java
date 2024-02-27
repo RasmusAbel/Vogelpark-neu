@@ -17,12 +17,12 @@ public class FilterTag {
     @Column
     private String name;
 
-    @ManyToMany(mappedBy = "filterTags", cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+    @ManyToMany(
+            mappedBy = "filterTags",
+            cascade = CascadeType.MERGE,
+            fetch = FetchType.EAGER
+    )
     private Set<Attraction> attractions = new HashSet<>();
-
-    public FilterTag(String name) {
-        this.name = name;
-    }
 
     public Long getId() {
         return id;
@@ -42,5 +42,9 @@ public class FilterTag {
                 "id: " + id +
                 ", name: " + name +
                 "]";
+    }
+
+    public Set<Attraction> getAttractions() {
+        return attractions;
     }
 }

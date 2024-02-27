@@ -14,10 +14,13 @@ import org.springframework.stereotype.Service;
 public class BirdParkBasicInfoDBInitializer {
     private static final Logger logger = LoggerFactory.getLogger(BirdParkApplication.class);
 
-    @Autowired
     private BirdParkBasicDataRepository birdParkBasicDataRepository;
-    @Autowired
     private OpeningHoursRepository openingHoursRepository;
+
+    public BirdParkBasicInfoDBInitializer(BirdParkBasicDataRepository birdParkBasicDataRepository, OpeningHoursRepository openingHoursRepository) {
+        this.birdParkBasicDataRepository = birdParkBasicDataRepository;
+        this.openingHoursRepository = openingHoursRepository;
+    }
 
     public void initialize() {
         if(birdParkBasicDataRepository.count() <= 0) {
@@ -26,23 +29,12 @@ public class BirdParkBasicInfoDBInitializer {
             vogelpark.setDescription("Wir sind gut zu Vögeln");
             vogelpark.setAddress("Waldweg 1, 54321 Musterstadt");
 
-            OpeningHours montag = new OpeningHours("Montag", "9:00", "18:00", vogelpark, null);
-            OpeningHours dienstag = new OpeningHours("Dienstag", "9:00", "18:00", vogelpark, null);
-            OpeningHours mittwoch = new OpeningHours("Mittwoch", "9:00", "18:00", vogelpark, null);
-            OpeningHours donnerstag = new OpeningHours("Donnerstag", "9:00", "18:00", vogelpark, null);
-            OpeningHours freitag = new OpeningHours("Freitag", "9:00", "18:00", vogelpark, null);
-            OpeningHours samstag = new OpeningHours("Samstag", "9:00", "18:00", vogelpark, null);
-            OpeningHours sonntag = new OpeningHours("Sonntag", "9:00", "18:00", vogelpark, null);
+            OpeningHours taeglich = new OpeningHours("Täglich", "9:00", "18:00", vogelpark, null);
+            //taeglich.setVogelpark(vogelpark);
+            vogelpark.getOpeningHours().add(taeglich);
 
             birdParkBasicDataRepository.save(vogelpark);
-
-            openingHoursRepository.save(montag);
-            openingHoursRepository.save(dienstag);
-            openingHoursRepository.save(mittwoch);
-            openingHoursRepository.save(donnerstag);
-            openingHoursRepository.save(freitag);
-            openingHoursRepository.save(samstag);
-            openingHoursRepository.save(sonntag);
+            openingHoursRepository.save(taeglich);
 
             logger.info("Grunddaten des Vogelparks wurden initial befuellt.");
         }
