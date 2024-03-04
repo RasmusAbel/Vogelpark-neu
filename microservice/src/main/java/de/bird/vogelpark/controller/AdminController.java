@@ -1,34 +1,28 @@
 package de.bird.vogelpark.controller;
 
-import de.bird.vogelpark.beans.Attraction;
-import de.bird.vogelpark.dto.ReadAttractionsByTagsResponse;
-import de.bird.vogelpark.service.AttractionsService;
-import de.bird.vogelpark.service.CreateAttractionService;
-import de.bird.vogelpark.service.CreateTagService;
-import de.bird.vogelpark.service.DeleteAttractionService;
+import de.bird.vogelpark.service.*;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
 public class AdminController {
 
-    private DeleteAttractionService deleteAttractionService;
+    private final DeleteAttractionService deleteAttractionService;
 
-    private CreateAttractionService createAttractionService;
+    private final CreateAttractionService createAttractionService;
 
-    private AttractionsService attractionsService;
+    private final CreateTagService createTagService;
 
-    private CreateTagService createTagService;
+    private final DeleteTagService deleteTagService;
 
 
-    public AdminController(DeleteAttractionService deleteAttractionService, CreateAttractionService createAttractionService, AttractionsService attractionsService, CreateTagService createTagService) {
+    public AdminController(DeleteAttractionService deleteAttractionService, CreateAttractionService createAttractionService, CreateTagService createTagService, DeleteTagService deleteTagService) {
         this.deleteAttractionService = deleteAttractionService;
         this.createAttractionService = createAttractionService;
-        this.attractionsService = attractionsService;
         this.createTagService = createTagService;
+        this.deleteTagService = deleteTagService;
     }
 
     @DeleteMapping(path = "/delete-attraction/")
@@ -44,5 +38,10 @@ public class AdminController {
     @PostMapping(path = "/create-tag/")
     public void createTag(@RequestParam("tagName") String tagName){
         createTagService.createTag(tagName);
+    }
+
+    @DeleteMapping(path = "/delete-tag/")
+    public void deleteTag(@RequestParam("tagName") String tagName){
+        deleteTagService.deleteTag(tagName);
     }
 }
