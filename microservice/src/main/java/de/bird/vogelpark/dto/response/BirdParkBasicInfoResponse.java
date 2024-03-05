@@ -1,4 +1,4 @@
-package de.bird.vogelpark.dto;
+package de.bird.vogelpark.dto.response;
 
 import java.util.ArrayList;
 import java.util.List;

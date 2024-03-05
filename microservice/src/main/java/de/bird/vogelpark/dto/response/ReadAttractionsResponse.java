@@ -1,9 +1,9 @@
-package de.bird.vogelpark.dto;
+package de.bird.vogelpark.dto.response;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReadAttractionsByTagsResponse {
+public class ReadAttractionsResponse {
     private String name;
     private String description;
     private List<OpeningHoursResponse> openingHoursResponses = new ArrayList<>();

@@ -1,4 +1,4 @@
-package de.bird.vogelpark.dto;
+package de.bird.vogelpark.dto.response;
 
 public class OpeningHoursResponse {
     private String weekday;

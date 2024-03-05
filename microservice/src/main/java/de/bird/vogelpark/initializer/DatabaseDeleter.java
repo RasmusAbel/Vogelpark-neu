@@ -29,10 +29,10 @@ public class DatabaseDeleter {
      * DB und die Tabellen selbst bleiben erhalten.
      */
     public void delete() {
-        attractionRepository.deleteAll();
-        birdParkBasicDataRepository.deleteAll();
         filterTagRepository.deleteAll();
         openingHoursRepository.deleteAll();
+        attractionRepository.deleteAll();
+        birdParkBasicDataRepository.deleteAll();
 
         logger.info("Der Inhalt der Datenbank wurde gelöscht.");
     }

@@ -5,15 +5,12 @@ import de.bird.vogelpark.beans.Attraction;
 import de.bird.vogelpark.beans.FilterTag;
 import de.bird.vogelpark.beans.OpeningHours;
 import de.bird.vogelpark.repositories.AttractionRepository;
-import de.bird.vogelpark.repositories.BirdParkBasicDataRepository;
 import de.bird.vogelpark.repositories.FilterTagRepository;
 import de.bird.vogelpark.repositories.OpeningHoursRepository;
-import de.bird.vogelpark.service.TagService;
+import de.bird.vogelpark.service.FindTagService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.w3c.dom.Attr;
 
 @Service
 public class AttractionsInitializer {
@@ -22,16 +19,16 @@ public class AttractionsInitializer {
     private AttractionRepository attractionRepository;
     private FilterTagRepository filterTagRepository;
     private OpeningHoursRepository openingHoursRepository;
-    private TagService tagService;
+    private FindTagService findTagService;
 
     public AttractionsInitializer(AttractionRepository attractionRepository,
                                   FilterTagRepository filterTagRepository,
                                   OpeningHoursRepository openingHoursRepository,
-                                  TagService tagService) {
+                                  FindTagService findTagService) {
         this.attractionRepository = attractionRepository;
         this.filterTagRepository = filterTagRepository;
         this.openingHoursRepository = openingHoursRepository;
-        this.tagService = tagService;
+        this.findTagService = findTagService;
     }
 
     public void initialize() {
@@ -68,18 +65,16 @@ public class AttractionsInitializer {
             c.setDescription("Gehen Sie bitte.");
 
             OpeningHours cOpeningHours = new OpeningHours("Täglich", "9:00", "17:00", null, c);
-            //cOpeningHours.setAttraction(c);
             c.getOpeningHours().add(cOpeningHours);
 
-            FilterTag naturTag = tagService.findOrCreateNewTag("Natur");
-            filterTagRepository.save(naturTag);
-            naturTag.getAttractions().add(c);
+            FilterTag naturTag = new FilterTag("Natur", c);
             c.getFilterTags().add(naturTag);
 
             attractionRepository.save(c);
+            filterTagRepository.save(naturTag);
             openingHoursRepository.save(cOpeningHours);
 
-            for(String tag : tagService.getAllTags()) {
+            for(String tag : findTagService.getAllTags()) {
                 logger.info("Neuer Tag hinzugefügt: " + tag);
             }
         }

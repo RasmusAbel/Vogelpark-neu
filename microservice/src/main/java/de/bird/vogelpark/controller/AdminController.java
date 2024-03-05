@@ -1,9 +1,9 @@
 package de.bird.vogelpark.controller;
 
+import de.bird.vogelpark.dto.request.CreateAttractionRequest;
 import de.bird.vogelpark.service.*;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -26,22 +26,23 @@ public class AdminController {
     }
 
     @DeleteMapping(path = "/delete-attraction/")
-    public void deleteAttraction(@RequestParam("name") String name) {
-        deleteAttractionService.deleteAttraction(name);
+    public ResponseEntity<String> deleteAttraction(@RequestParam("attractionName") String attractionName) {
+        return deleteAttractionService.deleteAttraction(attractionName);
     }
 
     @PostMapping(path = "/create-attraction/")
-    public void createAttraction(@RequestParam("data") List<String> data){
-        createAttractionService.createAttraction(data);
+    public ResponseEntity<String> createAttraction(@RequestBody CreateAttractionRequest createAttractionRequest) {
+        return createAttractionService.createAttraction(createAttractionRequest);
     }
 
-    @PostMapping(path = "/create-tag/")
-    public void createTag(@RequestParam("tagName") String tagName){
-        createTagService.createTag(tagName);
+    /*@PostMapping(path = "/create-tag/")
+    public ResponseEntity<String> createTag(@RequestParam("tagName") String tagName) {
+        return createTagService.createTag(tagName);
     }
+     */
 
     @DeleteMapping(path = "/delete-tag/")
-    public void deleteTag(@RequestParam("tagName") String tagName){
-        deleteTagService.deleteTag(tagName);
+    public ResponseEntity<String> deleteTag(@RequestParam("tagName") String tagName) {
+        return deleteTagService.deleteTag(tagName);
     }
 }

@@ -21,13 +21,9 @@ public class Attraction {
     private String description;
 
     @OneToMany(mappedBy = "attraction", cascade = CascadeType.ALL)
-    private List<OpeningHours> openingHours = new ArrayList<>();
+    private Set<OpeningHours> openingHours = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.MERGE)
-    @JoinTable(name = "attraction_tags",
-            joinColumns = @JoinColumn(name = "attraction_id"),
-            inverseJoinColumns = @JoinColumn(name = "filter_tag_id")
-    )
+    @OneToMany(mappedBy = "attraction", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<FilterTag> filterTags = new HashSet<>();
 
     public Long getId() {
@@ -50,9 +46,14 @@ public class Attraction {
         this.description = description;
     }
 
-    public List<OpeningHours> getOpeningHours() {
+    public Set<OpeningHours> getOpeningHours() {
         return openingHours;
     }
+
+    /*public Set<FilterTag> getFilterTags() {
+        return filterTags;
+    }
+     */
 
     public Set<FilterTag> getFilterTags() {
         return filterTags;
@@ -64,7 +65,8 @@ public class Attraction {
                 "id: " + id +
                 ", name: " + name +
                 ", description: " + description +
-                ", opening hours length: " + openingHours.size() +
+                ", number of opening hours: " + openingHours.size() +
+                ", number of tags: " + filterTags.size() +
                 "]";
     }
 }

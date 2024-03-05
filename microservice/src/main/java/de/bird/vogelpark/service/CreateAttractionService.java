@@ -3,12 +3,14 @@ package de.bird.vogelpark.service;
 import de.bird.vogelpark.beans.Attraction;
 import de.bird.vogelpark.beans.FilterTag;
 import de.bird.vogelpark.beans.OpeningHours;
+import de.bird.vogelpark.dto.request.CreateAttractionRequest;
+import de.bird.vogelpark.dto.request.CreateOpeningHoursRequest;
 import de.bird.vogelpark.repositories.AttractionRepository;
 import de.bird.vogelpark.repositories.FilterTagRepository;
 import de.bird.vogelpark.repositories.OpeningHoursRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,27 +22,51 @@ public class CreateAttractionService {
 
     private FilterTagRepository filterTagRepository;
 
-    public CreateAttractionService(AttractionRepository attractionRepository, OpeningHoursRepository openingHoursRepository, FilterTagRepository filterTagRepository) {
+    private CreateTagService createTagService;
+
+    public CreateAttractionService(AttractionRepository attractionRepository,
+                                   OpeningHoursRepository openingHoursRepository,
+                                   FilterTagRepository filterTagRepository,
+                                   CreateTagService createTagService) {
         this.attractionRepository = attractionRepository;
         this.openingHoursRepository = openingHoursRepository;
         this.filterTagRepository = filterTagRepository;
+        this.createTagService = createTagService;
     }
 
-    public void createAttraction(List<String> data) {
-
-        Attraction attraction = new Attraction();
-        attraction.setName(data.get(0));
-        attraction.setDescription(data.get(1));
-
-        OpeningHours openingHours = new OpeningHours(data.get(2), data.get(3), data.get(4), null, attraction);
-        attraction.getOpeningHours().add(openingHours);
-
-        for (String tagName : data.subList(5, data.size())) {
-            Optional<FilterTag> tag = filterTagRepository.findByName(tagName);
-            tag.ifPresent(filterTag -> attraction.getFilterTags().add(filterTag));
+    public ResponseEntity<String> createAttraction(CreateAttractionRequest req) {
+        //Wenn bereits eine Attraktion mit dem Namen exitsiert, soll keine neue erzeugt werden.
+        //Stattdessen wird eine Fehlermeldung zurückgegeben.
+        Optional<Attraction> foundAttraction = attractionRepository.findByName(req.getName());
+        if(foundAttraction.isPresent()) {
+            return ResponseEntity.badRequest().body(String.format("Attraction %s already exists", req.getName()));
         }
 
-        attractionRepository.save(attraction);
-        openingHoursRepository.save(attraction.getOpeningHours().get(0));
+        Attraction attr = new Attraction();
+        attr.setName(req.getName());
+        attr.setDescription(req.getDescription());
+
+        //Alle Öffnungszeiten aus dem Request erzeugen und der Attraktion hinzufügen
+        for(CreateOpeningHoursRequest createOpHoursReq : req.getOpeningHours()) {
+            OpeningHours openingHours = new OpeningHours(
+                    createOpHoursReq.getWeekday(),
+                    createOpHoursReq.getStartTime(),
+                    createOpHoursReq.getEndTime(),
+                    null,
+                    attr
+            );
+            openingHoursRepository.save(openingHours);
+            attr.getOpeningHours().add(openingHours);
+        }
+
+        //Für jeden der im Request gewünschten Tags:
+        //Den Tag erzeuge nund der Attraktion zuordnen
+        for(String tagName : req.getFilterTags()) {
+            FilterTag newTag = new FilterTag(tagName, attr);
+            filterTagRepository.save(newTag);
+            attr.getFilterTags().add(newTag);
+        }
+
+        return ResponseEntity.ok(String.format("Attraction %s successfully created", req.getName()));
     }
 }

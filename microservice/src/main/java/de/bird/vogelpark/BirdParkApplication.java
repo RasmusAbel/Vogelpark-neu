@@ -36,5 +36,4 @@ public class BirdParkApplication implements CommandLineRunner {
 		birdParkBasicInfoDBInitializer.initialize();
 		attractionsInitializer.initialize();
 	}
-
 }
