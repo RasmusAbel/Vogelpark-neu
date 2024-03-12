@@ -23,6 +23,16 @@ services:
     depends_on:
       - microservice
 
+  frontend_admin:
+    build:
+      context: ./frontend_admin
+      dockerfile: ./Dockerfile
+    ports:
+      - "8082:80"
+    depends_on:
+      - microservice
+
+
   db:
     image: postgres:13
     environment:
