@@ -29,22 +29,34 @@ class AttractionsPage extends React.Component {
         <p style={{ position: 'absolute', top: '-350px', left: '20px', fontSize: '24px', color: '#FFFFFF' }}>Attraktionen</p>
         <div style={{ position: 'fixed', top: '25%', transform: 'translateY(-50%)', marginLeft: '20vw', marginRight: '20vw', marginTop: '300px', maxHeight: '70vh', overflowY: 'auto' }}>
           {this.state.attractions.map((attraction, index) => (
-            <div key={index} style={{ border: '2px solid #006400', marginBottom: '20px' }}>
+            <div key={index} style={{ border: '2px solid #006400', marginBottom: '20px', display: 'flex', flexDirection: 'column' }}>
               <div style={{ display: 'flex' }}>
                 <div style={{ width: '200px', height: '200px', borderRight: '2px solid #006400', borderBottom: '2px solid #006400', padding: '10px' }}>
                   {/* Hier das Logo */}
                   {/* Wenn ein Logo in den Daten vorhanden wäre, könnte es hier eingefügt werden */}
                 </div>
-                <div style={{ padding: '10px' }}>
-                  {/* Hier der Attraktionsname und die Beschreibung */}
+                <div style={{ flex: 1, padding: '10px', borderRight: '2px solid #006400' }}>
+                  {/* Hier der Attraktionsname */}
                   <p style={{ fontWeight: 'bold', textDecoration: 'underline' }}>{attraction.name}</p>
+                  {/* Hier die Beschreibung */}
                   <p>{attraction.description}</p>
                 </div>
+                {/* Hier die Spalte für die Öffnungszeiten */}
+                <div style={{ flex: 1, padding: '10px' }}>
+                  <div>
+                    <p style={{ fontWeight: 'bold', textDecoration: 'underline' }}>Öffnungszeiten</p>
+                    {attraction.openingHoursResponses.map((openingHour, hourIndex) => (
+                      <div key={hourIndex}>
+                        <p>{openingHour.weekday} von {openingHour.startTime} bis {openingHour.endTime}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
-              <div style={{ textAlign: 'center', borderTop: '2px solid #006400', padding: '10px' }}>
+              <div style={{ display: 'flex', justifyContent: 'center', borderTop: '2px solid #006400', padding: '10px' }}>
                 {/* Hier die Tags als Buttons */}
                 {attraction.filterTagResponses.map((tag, tagIndex) => (
-                  <button key={tagIndex}>{tag}</button>
+                  <button key={tagIndex} style={{ marginRight: '5px' }}>{tag}</button>
                 ))}
               </div>
             </div>
