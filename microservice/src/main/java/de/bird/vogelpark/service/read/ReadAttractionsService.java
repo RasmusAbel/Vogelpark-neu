@@ -1,4 +1,4 @@
-package de.bird.vogelpark.service;
+package de.bird.vogelpark.service.read;
 
 import de.bird.vogelpark.beans.Attraction;
 import de.bird.vogelpark.beans.FilterTag;
@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class AttractionsService {
+public class ReadAttractionsService {
     private AttractionRepository attractionRepository;
 
-    public AttractionsService(AttractionRepository attractionRepository) {
+    public ReadAttractionsService(AttractionRepository attractionRepository) {
         this.attractionRepository = attractionRepository;
     }
 
@@ -43,6 +43,7 @@ public class AttractionsService {
 
             for(OpeningHours openingHours : attraction.getOpeningHours()) {
                 nextResponse.getOpeningHoursResponses().add(new OpeningHoursResponse(
+                        openingHours.getId(),
                         openingHours.getWeekday(),
                         openingHours.getStartTime(),
                         openingHours.getEndTime())

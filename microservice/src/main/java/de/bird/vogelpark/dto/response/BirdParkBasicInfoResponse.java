@@ -8,6 +8,7 @@ public class BirdParkBasicInfoResponse {
     private String description;
     private String address;
     private final List<OpeningHoursResponse> openingHoursResponses = new ArrayList<>();
+    private String logoUrl;
 
     public void setName(String name) {
         this.name = name;
@@ -25,15 +26,11 @@ public class BirdParkBasicInfoResponse {
         return name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
     public List<OpeningHoursResponse> getOpeningHoursResponses() {
         return openingHoursResponses;
+    }
+
+    public void setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl;
     }
 }

@@ -29,6 +29,8 @@ public class DatabaseDeleter {
      * DB und die Tabellen selbst bleiben erhalten.
      */
     public void delete() {
+        logger.info("Lösche den Inhalt der Datenbank...");
+
         filterTagRepository.deleteAll();
         openingHoursRepository.deleteAll();
         attractionRepository.deleteAll();

@@ -1,4 +1,4 @@
-package de.bird.vogelpark.service;
+package de.bird.vogelpark.service.read;
 
 import de.bird.vogelpark.beans.OpeningHours;
 import de.bird.vogelpark.beans.BirdParkBasicInfo;
@@ -8,10 +8,10 @@ import de.bird.vogelpark.repositories.BirdParkBasicDataRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class BirdParkBasicInfoService {
+public class ReadBirdParkBasicInfoService {
     private BirdParkBasicDataRepository repository;
 
-    public BirdParkBasicInfoService(BirdParkBasicDataRepository repository) {
+    public ReadBirdParkBasicInfoService(BirdParkBasicDataRepository repository) {
         this.repository = repository;
     }
 
@@ -36,6 +36,7 @@ public class BirdParkBasicInfoService {
 
         for(OpeningHours dataOpeningHours : data.getOpeningHours()) {
             response.getOpeningHoursResponses().add(new OpeningHoursResponse(
+                    dataOpeningHours.getId(),
                     dataOpeningHours.getWeekday(),
                     dataOpeningHours.getStartTime(),
                     dataOpeningHours.getEndTime())
@@ -45,6 +46,7 @@ public class BirdParkBasicInfoService {
         response.setName(data.getName());
         response.setDescription(data.getDescription());
         response.setAddress(data.getAddress());
+        response.setLogoUrl((data.getLogoUrl()));
 
         return response;
     }

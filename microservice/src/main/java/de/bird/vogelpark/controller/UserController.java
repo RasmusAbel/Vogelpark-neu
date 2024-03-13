@@ -2,9 +2,11 @@ package de.bird.vogelpark.controller;
 
 import de.bird.vogelpark.dto.response.ReadAttractionsResponse;
 import de.bird.vogelpark.dto.response.BirdParkBasicInfoResponse;
-import de.bird.vogelpark.service.AttractionsService;
-import de.bird.vogelpark.service.BirdParkBasicInfoService;
-import de.bird.vogelpark.service.FindTagService;
+import de.bird.vogelpark.dto.response.ReadTourResponse;
+import de.bird.vogelpark.service.read.ReadAttractionsService;
+import de.bird.vogelpark.service.read.ReadBirdParkBasicInfoService;
+import de.bird.vogelpark.service.read.ReadTagService;
+import de.bird.vogelpark.service.read.ReadToursService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,18 +18,19 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class UserController {
 
-    private BirdParkBasicInfoService birdParkBasicInfoService;
-    
-    private AttractionsService attractionsService;
+    private ReadBirdParkBasicInfoService birdParkBasicInfoService;
+    private ReadAttractionsService readAttractionsService;
+    private final ReadTagService findTagService;
+    private final ReadToursService readToursService;
 
-    private final FindTagService findTagService;
-
-    public UserController(BirdParkBasicInfoService birdParkBasicInfoService,
-                          AttractionsService attractionsService,
-                          FindTagService findTagService) {
+    public UserController(ReadBirdParkBasicInfoService birdParkBasicInfoService,
+                          ReadAttractionsService readAttractionsService,
+                          ReadTagService findTagService,
+                          ReadToursService readToursService) {
         this.birdParkBasicInfoService = birdParkBasicInfoService;
-        this.attractionsService = attractionsService;
+        this.readAttractionsService = readAttractionsService;
         this.findTagService = findTagService;
+        this.readToursService = readToursService;
     }
     @GetMapping(path = "/bird-park-basic-info/")
     public BirdParkBasicInfoResponse readBasicInfo() {
@@ -36,16 +39,21 @@ public class UserController {
 
     @GetMapping(path = "/attractions-by-tags/")
     public List<ReadAttractionsResponse> getAttractionsByTags(@RequestParam("tag") List<String> tags) {
-        return attractionsService.readAttractionsByTags(tags);
+        return readAttractionsService.readAttractionsByTags(tags);
     }
 
     @GetMapping(path = "/all-attractions/")
     public List<ReadAttractionsResponse> getAllAttractions() {
-        return attractionsService.readAllAttractions();
+        return readAttractionsService.readAllAttractions();
     }
 
     @GetMapping(path = "/all-tags/")
     public List<String> getAllTags() {
-        return findTagService.getAllTags();
+        return findTagService.readAllTags();
+    }
+
+    @GetMapping(path = "all-tours/")
+    public List<ReadTourResponse> getAllTours() {
+        return readToursService.readAllTours();
     }
 }

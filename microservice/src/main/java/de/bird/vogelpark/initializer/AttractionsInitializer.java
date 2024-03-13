@@ -7,7 +7,7 @@ import de.bird.vogelpark.beans.OpeningHours;
 import de.bird.vogelpark.repositories.AttractionRepository;
 import de.bird.vogelpark.repositories.FilterTagRepository;
 import de.bird.vogelpark.repositories.OpeningHoursRepository;
-import de.bird.vogelpark.service.FindTagService;
+import de.bird.vogelpark.service.read.ReadTagService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -19,12 +19,12 @@ public class AttractionsInitializer {
     private AttractionRepository attractionRepository;
     private FilterTagRepository filterTagRepository;
     private OpeningHoursRepository openingHoursRepository;
-    private FindTagService findTagService;
+    private ReadTagService findTagService;
 
     public AttractionsInitializer(AttractionRepository attractionRepository,
                                   FilterTagRepository filterTagRepository,
                                   OpeningHoursRepository openingHoursRepository,
-                                  FindTagService findTagService) {
+                                  ReadTagService findTagService) {
         this.attractionRepository = attractionRepository;
         this.filterTagRepository = filterTagRepository;
         this.openingHoursRepository = openingHoursRepository;
@@ -39,7 +39,6 @@ public class AttractionsInitializer {
             a.setDescription("Gute Aussichten für Sie.");
 
             OpeningHours aOpeningHours = new OpeningHours("Täglich", "10:00", "17:00", null, a);
-            //aOpeningHours.setAttraction(a);
             a.getOpeningHours().add(aOpeningHours);
 
             openingHoursRepository.save(aOpeningHours);
@@ -74,7 +73,7 @@ public class AttractionsInitializer {
             filterTagRepository.save(naturTag);
             openingHoursRepository.save(cOpeningHours);
 
-            for(String tag : findTagService.getAllTags()) {
+            for(String tag : findTagService.readAllTags()) {
                 logger.info("Neuer Tag hinzugefügt: " + tag);
             }
         }

@@ -1,4 +1,4 @@
-package de.bird.vogelpark.service;
+package de.bird.vogelpark.service.create;
 
 import de.bird.vogelpark.beans.FilterTag;
 import de.bird.vogelpark.repositories.FilterTagRepository;

@@ -17,10 +17,6 @@ public class ReadAttractionsResponse {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
     public void setDescription(String description) {
         this.description = description;
     }
@@ -29,15 +25,7 @@ public class ReadAttractionsResponse {
         return openingHoursResponses;
     }
 
-    public void setOpeningHoursResponses(List<OpeningHoursResponse> openingHoursResponses) {
-        this.openingHoursResponses = openingHoursResponses;
-    }
-
     public List<String> getFilterTagResponses() {
         return filterTagResponses;
-    }
-
-    public void setFilterTagResponses(List<String> filterTagResponses) {
-        this.filterTagResponses = filterTagResponses;
     }
 }

@@ -26,6 +26,13 @@ public class Attraction {
     @OneToMany(mappedBy = "attraction", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<FilterTag> filterTags = new HashSet<>();
 
+    @ManyToMany(
+            fetch = FetchType.EAGER,
+            mappedBy = "attractions",
+            cascade = CascadeType.MERGE
+    )
+    private Set<Tour> tours = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -50,19 +57,17 @@ public class Attraction {
         return openingHours;
     }
 
-    /*public Set<FilterTag> getFilterTags() {
-        return filterTags;
-    }
-     */
-
     public Set<FilterTag> getFilterTags() {
         return filterTags;
     }
 
+    public Set<Tour> getTours() {
+        return tours;
+    }
+
     @Override
     public String toString() {
-        return "attraction: [" +
-                "id: " + id +
+        return "attraction: [id: " + id +
                 ", name: " + name +
                 ", description: " + description +
                 ", number of opening hours: " + openingHours.size() +

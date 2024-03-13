@@ -28,6 +28,7 @@ public class BirdParkBasicInfoDBInitializer {
             vogelpark.setName("Hamelner Vögelforst");
             vogelpark.setDescription("Wir sind gut zu Vögeln");
             vogelpark.setAddress("Waldweg 1, 54321 Musterstadt");
+            vogelpark.setLogoUrl("");
 
             OpeningHours taeglich = new OpeningHours("Täglich", "9:00", "18:00", vogelpark, null);
             //taeglich.setVogelpark(vogelpark);

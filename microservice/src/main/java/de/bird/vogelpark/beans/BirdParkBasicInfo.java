@@ -21,6 +21,9 @@ public class BirdParkBasicInfo {
     @Column
     private String description;
 
+    @Column
+    private String logoUrl;
+
     @OneToMany(mappedBy = "birdParkInfo", cascade = CascadeType.ALL)
     private List<OpeningHours> openingHours = new ArrayList<>();
 
@@ -58,5 +61,13 @@ public class BirdParkBasicInfo {
 
     public void setOpeningHours(List<OpeningHours> openingHours) {
         this.openingHours = openingHours;
+    }
+
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+
+    public void setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl;
     }
 }

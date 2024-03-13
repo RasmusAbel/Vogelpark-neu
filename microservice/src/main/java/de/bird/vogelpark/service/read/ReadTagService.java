@@ -1,4 +1,4 @@
-package de.bird.vogelpark.service;
+package de.bird.vogelpark.service.read;
 
 import de.bird.vogelpark.beans.FilterTag;
 import de.bird.vogelpark.repositories.FilterTagRepository;
@@ -7,14 +7,14 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class FindTagService {
+public class ReadTagService {
     private FilterTagRepository filterTagRepository;
 
-    public FindTagService(FilterTagRepository filterTagRepository) {
+    public ReadTagService(FilterTagRepository filterTagRepository) {
         this.filterTagRepository = filterTagRepository;
     }
 
-    public List<String> getAllTags() {
+    public List<String> readAllTags() {
         Set<String> uniqueTags = new HashSet<>();
 
         for(FilterTag tag : filterTagRepository.findAll()) {
