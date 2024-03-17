@@ -1,5 +1,6 @@
 package de.bird.vogelpark.dto.response;
 
+/*
 public class OpeningHoursResponse {
     private Long id;
     private String weekday;
@@ -29,3 +30,11 @@ public class OpeningHoursResponse {
         return endTime;
     }
 }
+ */
+
+public record OpeningHoursResponse(
+        Long id,
+        String weekday,
+        String startTime,
+        String endTime
+) {}

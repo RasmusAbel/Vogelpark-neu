@@ -3,6 +3,7 @@ package de.bird.vogelpark.dto.response;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
 public class ReadAttractionsResponse {
     private String name;
     private String description;
@@ -29,3 +30,11 @@ public class ReadAttractionsResponse {
         return filterTagResponses;
     }
 }
+ */
+
+public record ReadAttractionsResponse(
+        String name,
+        String description,
+        List<OpeningHoursResponse> openingHoursResponses,
+        List<String> filterTagResponses
+) { }

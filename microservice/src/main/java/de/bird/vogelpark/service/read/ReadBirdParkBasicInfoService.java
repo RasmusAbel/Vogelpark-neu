@@ -6,6 +6,8 @@ import de.bird.vogelpark.dto.response.OpeningHoursResponse;
 import de.bird.vogelpark.dto.response.BirdParkBasicInfoResponse;
 import de.bird.vogelpark.repositories.BirdParkBasicDataRepository;
 import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.ArrayList;
 
 @Service
 public class ReadBirdParkBasicInfoService {
@@ -17,7 +19,6 @@ public class ReadBirdParkBasicInfoService {
 
     public BirdParkBasicInfoResponse readBasicData() {
         BirdParkBasicInfo data = null;
-        BirdParkBasicInfoResponse response;
         Iterable<BirdParkBasicInfo> iterator = repository.findAll();
         for(BirdParkBasicInfo current : iterator) {
             data = current;
@@ -31,11 +32,10 @@ public class ReadBirdParkBasicInfoService {
     }
 
     private BirdParkBasicInfoResponse mapData2Response(BirdParkBasicInfo data) {
-        BirdParkBasicInfoResponse response = new BirdParkBasicInfoResponse();
-        //List<OpeningHoursResponse> openingHoursResponses = new ArrayList<>();
+        List<OpeningHoursResponse> openingHoursResponses = new ArrayList<>();
 
         for(OpeningHours dataOpeningHours : data.getOpeningHours()) {
-            response.getOpeningHoursResponses().add(new OpeningHoursResponse(
+            openingHoursResponses.add(new OpeningHoursResponse(
                     dataOpeningHours.getId(),
                     dataOpeningHours.getWeekday(),
                     dataOpeningHours.getStartTime(),
@@ -43,11 +43,12 @@ public class ReadBirdParkBasicInfoService {
             );
         }
 
-        response.setName(data.getName());
-        response.setDescription(data.getDescription());
-        response.setAddress(data.getAddress());
-        response.setLogoUrl((data.getLogoUrl()));
-
-        return response;
+        return new BirdParkBasicInfoResponse(
+                data.getName(),
+                data.getDescription(),
+                data.getAddress(),
+                openingHoursResponses,
+                data.getLogoUrl()
+        );
     }
 }

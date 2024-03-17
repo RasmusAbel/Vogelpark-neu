@@ -34,6 +34,23 @@ public class ReadToursService {
         return mapData2Response(data);
     }
 
+    public List<ReadTourResponse> readToursByAttractionNames(List<String> attractionNames) {
+        List<Tour> data = new ArrayList<>();
+
+        //Only add tours to data if they contain all of the attraction names
+        for(Tour tour : tourRepository.findAll()) {
+            Set<String> tourAttractionNames = new HashSet<>();
+            for(Attraction attr : tour.getAttractions()) {
+                tourAttractionNames.add(attr.getName());
+            }
+            if(tourAttractionNames.containsAll(attractionNames)) {
+                data.add(tour);
+            }
+        }
+
+        return mapData2Response(data);
+    }
+
     private List<ReadTourResponse> mapData2Response(List<Tour> data) {
         List<ReadTourResponse> responses = new ArrayList<>();
 
@@ -57,20 +74,6 @@ public class ReadToursService {
 
             logger.info("--- tour name: " + nextResponse.name());
             logger.info("--- tour desc: " + nextResponse.description());
-
-            /*
-            nextResponse.setName(tour.getName());
-            nextResponse.setDescription(tour.getDescription());
-            nextResponse.setPrice(tour.getPriceCents());
-            nextResponse.setStartTime(tour.getStartTime());
-            nextResponse.setEndTime(tour.getEndTime());
-            nextResponse.setDuration(tour.getDuration());
-            nextResponse.setImageUrl(tour.getImageUrl());
-
-            for(Attraction attr : tour.getAttractions()) {
-                nextResponse.getAttractionNames().add(attr.getName());
-            }
-             */
 
             responses.add(nextResponse);
         }

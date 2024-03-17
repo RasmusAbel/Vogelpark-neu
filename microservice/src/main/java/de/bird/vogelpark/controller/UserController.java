@@ -42,6 +42,11 @@ public class UserController {
         return readAttractionsService.readAttractionsByTags(tags);
     }
 
+    @GetMapping(path = "tours-by-attractions")
+    public List<ReadTourResponse> getToursByAttractionNames(@RequestParam("attractionName") List<String> attractionNames) {
+        return readToursService.readToursByAttractionNames(attractionNames);
+    }
+
     @GetMapping(path = "/all-attractions/")
     public List<ReadAttractionsResponse> getAllAttractions() {
         return readAttractionsService.readAllAttractions();

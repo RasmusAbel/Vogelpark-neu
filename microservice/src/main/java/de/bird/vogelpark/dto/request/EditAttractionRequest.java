@@ -1,5 +1,6 @@
 package de.bird.vogelpark.dto.request;
 
+/*
 public class EditAttractionRequest {
     private String currentName;
     private String newName;
@@ -35,5 +36,31 @@ public class EditAttractionRequest {
 
     public String[] getFilterTagsToRemove() {
         return filterTagsToRemove;
+    }
+}
+ */
+
+public record EditAttractionRequest(
+        String currentName,
+        String newName,
+        String newDescription,
+        CreateOpeningHoursRequest[] openingHoursToAdd,
+        Long[] openingHourIdsToRemove,
+        String[] filterTagsToAdd,
+        String[] filterTagsToRemove
+) {
+    public EditAttractionRequest {
+        if (openingHoursToAdd == null) {
+            openingHoursToAdd = new CreateOpeningHoursRequest[0];
+        }
+        if (openingHourIdsToRemove == null) {
+            openingHourIdsToRemove = new Long[0];
+        }
+        if (filterTagsToAdd == null) {
+            filterTagsToAdd = new String[0];
+        }
+        if (filterTagsToRemove == null) {
+            filterTagsToRemove = new String[0];
+        }
     }
 }

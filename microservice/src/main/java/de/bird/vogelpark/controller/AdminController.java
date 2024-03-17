@@ -8,12 +8,18 @@ import de.bird.vogelpark.service.delete.DeleteAttractionService;
 import de.bird.vogelpark.service.delete.DeleteTagService;
 import de.bird.vogelpark.service.edit.EditAttractionService;
 import de.bird.vogelpark.service.edit.EditBirdParkBasicInfoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
 
 @RestController
 @CrossOrigin(origins = "*")
 public class AdminController {
+
+    private final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
     private final DeleteAttractionService deleteAttractionService;
     private final CreateAttractionService createAttractionService;
@@ -55,7 +61,7 @@ public class AdminController {
     }
 
     @PutMapping(path = "/edit-basic-info/")
-    public ResponseEntity<String> editBasiInfo(@RequestBody EditBirdParkBasicInfoRequest editBasicInfoRequest) {
+    public ResponseEntity<String> editBasicInfo(@RequestBody EditBirdParkBasicInfoRequest editBasicInfoRequest) {
         return editBirdParkBasicInfoService.editBasicInfo(editBasicInfoRequest);
     }
 }

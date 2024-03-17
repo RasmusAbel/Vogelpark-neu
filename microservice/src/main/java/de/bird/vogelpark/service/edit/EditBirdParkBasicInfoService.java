@@ -42,29 +42,46 @@ public class EditBirdParkBasicInfoService {
             birdParkBasicInfo.setLogoUrl(req.getNewLogoUrl());
         }
 
-        //Neue Öffnungszeiten hinzufügen
-        for(CreateOpeningHoursRequest createOpHoursReq : req.getOpeningHoursToAdd()) {
+        removeOpeningHours(birdParkBasicInfo, req.getOpeningHourIdsToRemove());
+        addOpeningHours(birdParkBasicInfo, req.getOpeningHoursToAdd());
+
+        birdParkBasicDataRepository.save(birdParkBasicInfo);
+
+        return ResponseEntity.ok("Bird park basic info successfully edited");
+    }
+
+    /**
+     * Removes opening hours with the given ids from the bird park basic info
+     * @param birdPark bird park basic info to remove opening hours from
+     * @param opHourIdsToRemove ids of opening hours to remove
+     */
+    private void removeOpeningHours(BirdParkBasicInfo birdPark, Long[] opHourIdsToRemove) {
+        for(Long opHoursId : opHourIdsToRemove) {
+            Optional<OpeningHours> foundOpHours = openingHoursRepository.findById(opHoursId);
+            if(foundOpHours.isPresent()) {
+                OpeningHours openingHours = foundOpHours.get();
+                birdPark.getOpeningHours().remove(openingHours);
+                openingHoursRepository.delete(openingHours);
+            }
+        }
+    }
+
+    /**
+     * Adds the passed opening hours to the bird park basic info
+     * @param birdPark bird park basic info to add opening hours to
+     * @param opHoursToAdd opening hours to add
+     */
+    private void addOpeningHours(BirdParkBasicInfo birdPark, CreateOpeningHoursRequest[] opHoursToAdd) {
+        for(CreateOpeningHoursRequest createOpHoursReq : opHoursToAdd) {
             OpeningHours openingHours = new OpeningHours(
                     createOpHoursReq.getWeekday(),
                     createOpHoursReq.getStartTime(),
                     createOpHoursReq.getEndTime(),
-                    birdParkBasicInfo,
+                    birdPark,
                     null
             );
             openingHoursRepository.save(openingHours);
-            birdParkBasicInfo.getOpeningHours().add(openingHours);
+            birdPark.getOpeningHours().add(openingHours);
         }
-
-        //Zu löschende Öffnungszeiten entfernen
-        for(Long opHoursId : req.getOpeningHourIdsToRemove()) {
-            Optional<OpeningHours> foundOpHours = openingHoursRepository.findById(opHoursId);
-            if(foundOpHours.isPresent()) {
-                OpeningHours openingHours = foundOpHours.get();
-                birdParkBasicInfo.getOpeningHours().remove(openingHours);
-                openingHoursRepository.delete(openingHours);
-            }
-        }
-
-        return ResponseEntity.ok("Bird park basic info successfully edited");
     }
 }

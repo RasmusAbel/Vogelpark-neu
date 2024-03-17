@@ -45,6 +45,7 @@ public class CreateAttractionService {
         Attraction attr = new Attraction();
         attr.setName(req.getName());
         attr.setDescription(req.getDescription());
+        attractionRepository.save(attr);
 
         //Alle Öffnungszeiten aus dem Request erzeugen und der Attraktion hinzufügen
         for(CreateOpeningHoursRequest createOpHoursReq : req.getOpeningHours()) {
@@ -66,6 +67,8 @@ public class CreateAttractionService {
             filterTagRepository.save(newTag);
             attr.getFilterTags().add(newTag);
         }
+
+        attractionRepository.save(attr);
 
         return ResponseEntity.ok(String.format("Attraction %s successfully created", req.getName()));
     }

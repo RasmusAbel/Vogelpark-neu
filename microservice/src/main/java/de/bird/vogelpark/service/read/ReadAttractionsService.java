@@ -37,22 +37,28 @@ public class ReadAttractionsService {
         List<ReadAttractionsResponse> responses = new ArrayList<>();
 
         for(Attraction attraction : data) {
-            ReadAttractionsResponse nextResponse = new ReadAttractionsResponse();
-            nextResponse.setName(attraction.getName());
-            nextResponse.setDescription(attraction.getDescription());
 
-            for(OpeningHours openingHours : attraction.getOpeningHours()) {
-                nextResponse.getOpeningHoursResponses().add(new OpeningHoursResponse(
-                        openingHours.getId(),
-                        openingHours.getWeekday(),
-                        openingHours.getStartTime(),
-                        openingHours.getEndTime())
+            List<OpeningHoursResponse> openingHoursResponses = new ArrayList<>();
+            for(OpeningHours openingHoursData : attraction.getOpeningHours()) {
+                openingHoursResponses.add(new OpeningHoursResponse(
+                        openingHoursData.getId(),
+                        openingHoursData.getWeekday(),
+                        openingHoursData.getStartTime(),
+                        openingHoursData.getEndTime())
                 );
             }
 
+            List<String> filterTagResponses = new ArrayList<>();
             for (FilterTag tag : attraction.getFilterTags()) {
-                nextResponse.getFilterTagResponses().add(tag.getName());
+                filterTagResponses.add(tag.getName());
             }
+
+            ReadAttractionsResponse nextResponse = new ReadAttractionsResponse(
+                    attraction.getName(),
+                    attraction.getDescription(),
+                    openingHoursResponses,
+                    filterTagResponses
+            );
 
             responses.add(nextResponse);
         }
