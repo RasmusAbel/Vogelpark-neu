@@ -65,15 +65,12 @@ public class ReadToursService {
                     tour.getName(),
                     tour.getDescription(),
                     tour.getPriceCents(),
-                    tour.getStartTime(),
-                    tour.getEndTime(),
-                    tour.getDuration(),
+                    tour.getStartTime().toString(),
+                    tour.getEndTime().toString(),
+                    tour.getDurationString(),
                     tour.getImageUrl(),
                     attractionNames
             );
-
-            logger.info("--- tour name: " + nextResponse.name());
-            logger.info("--- tour desc: " + nextResponse.description());
 
             responses.add(nextResponse);
         }

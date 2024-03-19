@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
+
 @Service
 public class BirdParkBasicInfoDBInitializer {
     private static final Logger logger = LoggerFactory.getLogger(BirdParkApplication.class);
@@ -30,8 +32,11 @@ public class BirdParkBasicInfoDBInitializer {
             vogelpark.setAddress("Waldweg 1, 54321 Musterstadt");
             vogelpark.setLogoUrl("");
 
-            OpeningHours taeglich = new OpeningHours("Täglich", "9:00", "18:00", vogelpark, null);
-            //taeglich.setVogelpark(vogelpark);
+            OpeningHours taeglich = new OpeningHours("Täglich",
+                    LocalTime.of(8, 0),
+                    LocalTime.of(19, 0),
+                    vogelpark,
+                    null);
             vogelpark.getOpeningHours().add(taeglich);
 
             birdParkBasicDataRepository.save(vogelpark);

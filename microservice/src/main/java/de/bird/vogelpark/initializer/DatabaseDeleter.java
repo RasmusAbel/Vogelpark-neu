@@ -14,14 +14,18 @@ public class DatabaseDeleter {
     private final FilterTagRepository filterTagRepository;
     private final OpeningHoursRepository openingHoursRepository;
 
+    private final TourRepository tourRepository;
+
     public DatabaseDeleter(AttractionRepository attractionRepository,
                            BirdParkBasicDataRepository birdParkBasicDataRepository,
                            FilterTagRepository filterTagRepository,
-                           OpeningHoursRepository openingHoursRepository) {
+                           OpeningHoursRepository openingHoursRepository,
+                           TourRepository tourRepository) {
         this.attractionRepository = attractionRepository;
         this.birdParkBasicDataRepository = birdParkBasicDataRepository;
         this.filterTagRepository = filterTagRepository;
         this.openingHoursRepository = openingHoursRepository;
+        this.tourRepository = tourRepository;
     }
 
     /**

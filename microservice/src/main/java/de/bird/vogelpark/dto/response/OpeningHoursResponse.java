@@ -32,9 +32,11 @@ public class OpeningHoursResponse {
 }
  */
 
+import java.time.LocalTime;
+
 public record OpeningHoursResponse(
         Long id,
         String weekday,
-        String startTime,
-        String endTime
+        LocalTime startTime,
+        LocalTime endTime
 ) {}

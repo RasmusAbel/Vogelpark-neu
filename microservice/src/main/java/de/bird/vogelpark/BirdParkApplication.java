@@ -10,6 +10,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
+import java.time.LocalTime;
+
 @SpringBootApplication
 public class BirdParkApplication implements CommandLineRunner {
 	private static final Logger logger = LoggerFactory.getLogger(BirdParkApplication.class);

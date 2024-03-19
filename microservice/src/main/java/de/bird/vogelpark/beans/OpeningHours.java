@@ -2,6 +2,8 @@ package de.bird.vogelpark.beans;
 
 import jakarta.persistence.*;
 
+import java.time.LocalTime;
+
 @Entity
 @Table
 public class OpeningHours {
@@ -13,10 +15,10 @@ public class OpeningHours {
     private String weekday;
 
     @Column
-    private String startTime;
+    private int startTimeHour, startTimeMinute;
 
     @Column
-    private String endTime;
+    private int endTimeHour, endTimeMinute;
 
     @ManyToOne(optional = true, cascade = CascadeType.MERGE)
     @JoinColumn(name = "bird_park_id")
@@ -28,18 +30,22 @@ public class OpeningHours {
     //ODER Fremdschlüssel auf die Attraktion, deren Öffnungszeiten angegeben werden
     private Attraction attraction;
 
-    public OpeningHours(String weekday, String startTime, String endTime, BirdParkBasicInfo birdParkInfo, Attraction attraction) {
+    public OpeningHours(String weekday, LocalTime startTime, LocalTime endTime, BirdParkBasicInfo birdParkInfo, Attraction attraction) {
         this.weekday = weekday;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.startTimeHour = startTime.getHour();
+        this.startTimeMinute = startTime.getMinute();
+        this.endTimeHour = endTime.getHour();
+        this.endTimeMinute = endTime.getMinute();
         this.birdParkInfo = birdParkInfo;
         this.attraction = attraction;
     }
 
-    public OpeningHours(String weekday, String startTime, String endTime) {
+    public OpeningHours(String weekday, LocalTime startTime, LocalTime endTime) {
         this.weekday = weekday;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.startTimeHour = startTime.getHour();
+        this.startTimeMinute = startTime.getMinute();
+        this.endTimeHour = endTime.getHour();
+        this.endTimeMinute = endTime.getMinute();
     }
 
     public OpeningHours() {
@@ -54,24 +60,12 @@ public class OpeningHours {
         return weekday;
     }
 
-    public void setWeekday(String weekday) {
-        this.weekday = weekday;
+    public LocalTime getStartTime() {
+        return LocalTime.of(startTimeHour, startTimeMinute);
     }
 
-    public String getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
+    public LocalTime getEndTime() {
+        return LocalTime.of(endTimeHour, endTimeMinute);
     }
 
     public BirdParkBasicInfo getVogelpark() {
@@ -88,24 +82,5 @@ public class OpeningHours {
 
     public void setAttraction(Attraction attraction) {
         this.attraction = attraction;
-    }
-
-    @Override
-    public String toString() {
-        String output = "opening hours: [" +
-                "id: " + id +
-                ", weekday: " + weekday +
-                ", start time: " + startTime +
-                ", end time: " + endTime;
-
-        if(birdParkInfo != null) {
-            output += ", bird_park_id: " + birdParkInfo.getId();
-        }
-
-        if(attraction != null) {
-            output += ", attraction_id: " + attraction.getId();
-        }
-
-        return output + "]";
     }
 }

@@ -9,6 +9,7 @@ import de.bird.vogelpark.repositories.OpeningHoursRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.util.Optional;
 @Service
 public class EditBirdParkBasicInfoService {
@@ -26,24 +27,24 @@ public class EditBirdParkBasicInfoService {
         //Get first and only element of birdParkBasicDataRepository
         BirdParkBasicInfo birdParkBasicInfo = birdParkBasicDataRepository.findAll().iterator().next();
 
-        if(req.getNewName() != null) {
-            birdParkBasicInfo.setName(req.getNewName());
+        if(req.newName() != null) {
+            birdParkBasicInfo.setName(req.newName());
         }
 
-        if(req.getNewAddress() != null) {
-            birdParkBasicInfo.setAddress(req.getNewAddress());
+        if(req.newAddress() != null) {
+            birdParkBasicInfo.setAddress(req.newAddress());
         }
 
-        if(req.getNewDescription() != null) {
-            birdParkBasicInfo.setDescription(req.getNewDescription());
+        if(req.newDescription() != null) {
+            birdParkBasicInfo.setDescription(req.newDescription());
         }
 
-        if(req.getNewLogoUrl() != null) {
-            birdParkBasicInfo.setLogoUrl(req.getNewLogoUrl());
+        if(req.newLogoUrl() != null) {
+            birdParkBasicInfo.setLogoUrl(req.newLogoUrl());
         }
 
-        removeOpeningHours(birdParkBasicInfo, req.getOpeningHourIdsToRemove());
-        addOpeningHours(birdParkBasicInfo, req.getOpeningHoursToAdd());
+        removeOpeningHours(birdParkBasicInfo, req.openingHourIdsToRemove());
+        addOpeningHours(birdParkBasicInfo, req.openingHoursToAdd());
 
         birdParkBasicDataRepository.save(birdParkBasicInfo);
 
@@ -74,9 +75,9 @@ public class EditBirdParkBasicInfoService {
     private void addOpeningHours(BirdParkBasicInfo birdPark, CreateOpeningHoursRequest[] opHoursToAdd) {
         for(CreateOpeningHoursRequest createOpHoursReq : opHoursToAdd) {
             OpeningHours openingHours = new OpeningHours(
-                    createOpHoursReq.getWeekday(),
-                    createOpHoursReq.getStartTime(),
-                    createOpHoursReq.getEndTime(),
+                    createOpHoursReq.weekday(),
+                    LocalTime.of(createOpHoursReq.startTimeHour(), createOpHoursReq.startTimeMinute()),
+                    LocalTime.of(createOpHoursReq.endTimeHour(), createOpHoursReq.endTimeMinute()),
                     birdPark,
                     null
             );

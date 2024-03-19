@@ -2,6 +2,8 @@ package de.bird.vogelpark.beans;
 
 import jakarta.persistence.*;
 
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,13 +20,13 @@ public class Tour {
     @Column
     private int priceCents;
     @Column
-    private String startTime;
-    @Column
-    private String endTime;
-    @Column
-    private String duration;
-    @Column
     private String imageUrl;
+    @Column
+    private int startTimeHour, startTimeMinute;
+    @Column
+    private int endTimeHour, endTimeMinute;
+    @Column
+    private long durationSeconds;
 
     @ManyToMany(
             fetch = FetchType.EAGER,
@@ -68,35 +70,40 @@ public class Tour {
         return attractions;
     }
 
-    public String getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
-    }
-
-    public String getDuration() {
-        return duration;
-    }
-
-    public void setDuration(String duration) {
-        this.duration = duration;
-    }
-
     public String getImageUrl() {
         return imageUrl;
     }
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public void setStartTime(LocalTime startTime) {
+        LocalTime endTime = LocalTime.of(endTimeHour, endTimeMinute);
+        this.startTimeHour = startTime.getHour();
+        this.startTimeMinute = startTime.getMinute();
+        this.durationSeconds = Duration.between(startTime, endTime).getSeconds();
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        LocalTime startTime = LocalTime.of(startTimeHour, startTimeMinute);
+        this.endTimeHour = endTime.getHour();
+        this.endTimeMinute = endTime.getMinute();
+        this.durationSeconds = Duration.between(startTime, endTime).getSeconds();
+    }
+
+    public LocalTime getStartTime() {
+        return LocalTime.of(startTimeHour, startTimeMinute);
+    }
+
+    public LocalTime getEndTime() {
+        return LocalTime.of(endTimeHour, endTimeMinute);
+    }
+
+    public String getDurationString() {
+        long hours = Duration.ofSeconds(durationSeconds).toHoursPart();
+        long minutes = Duration.ofSeconds(durationSeconds).toMinutesPart();
+
+        return hours + ":" + minutes + (minutes < 10 ? "0" : "");
     }
 }

@@ -1,21 +1,36 @@
 package de.bird.vogelpark.dto.request;
 
+import java.time.LocalTime;
+
+/*
 public class CreateOpeningHoursRequest {
     private String weekday;
 
-    private String startTime;
+    private LocalTime startTime;
 
-    private String endTime;
+    private LocalTime endTime;
 
     public String getWeekday() {
         return weekday;
     }
 
-    public String getStartTime() {
+    public LocalTime getStartTime() {
         return startTime;
     }
 
-    public String getEndTime() {
+    public LocalTime getEndTime() {
         return endTime;
+    }
+}
+ */
+
+public record CreateOpeningHoursRequest(
+        String weekday,
+        int startTimeHour, int startTimeMinute,
+        int endTimeHour, int endTimeMinute) {
+    public CreateOpeningHoursRequest {
+        if(weekday == null) {
+            weekday = "";
+        }
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.util.Optional;
 
 @Service
@@ -72,9 +73,9 @@ public class EditAttractionService {
     private void addOpeningHours(Attraction attr, CreateOpeningHoursRequest[] opHoursToAdd) {
         for(CreateOpeningHoursRequest createOpHoursReq : opHoursToAdd) {
             OpeningHours openingHours = new OpeningHours(
-                    createOpHoursReq.getWeekday(),
-                    createOpHoursReq.getStartTime(),
-                    createOpHoursReq.getEndTime(),
+                    createOpHoursReq.weekday(),
+                    LocalTime.of(createOpHoursReq.startTimeHour(), createOpHoursReq.startTimeMinute()),
+                    LocalTime.of(createOpHoursReq.endTimeHour(), createOpHoursReq.endTimeMinute()),
                     null,
                     attr
             );

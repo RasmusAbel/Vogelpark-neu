@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
+
 @Service
 public class AttractionsInitializer {
     private static final Logger logger = LoggerFactory.getLogger(BirdParkApplication.class);
@@ -38,11 +40,18 @@ public class AttractionsInitializer {
             a.setName("Aussichtsturm");
             a.setDescription("Gute Aussichten für Sie.");
 
-            OpeningHours aOpeningHours = new OpeningHours("Täglich", "10:00", "17:00", null, a);
-            a.getOpeningHours().add(aOpeningHours);
+            OpeningHours aOpeningHours = new OpeningHours(
+                    "Täglich",
+                    LocalTime.of(10, 0),
+                    LocalTime.of(17, 0)
+            );
+            //openingHoursRepository.save(aOpeningHours);
 
-            openingHoursRepository.save(aOpeningHours);
+            a.getOpeningHours().add(aOpeningHours);
             attractionRepository.save(a);
+
+            aOpeningHours.setAttraction(a);
+            openingHoursRepository.save(aOpeningHours);
 
 
 
@@ -50,12 +59,18 @@ public class AttractionsInitializer {
             b.setName("Flugkäfig");
             b.setDescription("Die können zwar fliegen, aber nicht abhauen.");
 
-            OpeningHours bOpeningHours = new OpeningHours("Täglich", "9:00", "17:00", null, b);
-            //bOpeningHours.setAttraction(b);
+            OpeningHours bOpeningHours = new OpeningHours(
+                    "Täglich",
+                    LocalTime.of(9, 0),
+                    LocalTime.of(17, 0)
+            );
+            //openingHoursRepository.save(bOpeningHours);
             b.getOpeningHours().add(bOpeningHours);
 
-            openingHoursRepository.save(bOpeningHours);
             attractionRepository.save(b);
+
+            bOpeningHours.setAttraction(b);
+            openingHoursRepository.save(bOpeningHours);
 
 
 
@@ -63,7 +78,12 @@ public class AttractionsInitializer {
             c.setName("Lehrpfad");
             c.setDescription("Gehen Sie bitte.");
 
-            OpeningHours cOpeningHours = new OpeningHours("Täglich", "9:00", "17:00", null, c);
+            OpeningHours cOpeningHours = new OpeningHours(
+                    "Täglich",
+                    LocalTime.of(9, 0),
+                    LocalTime.of(17, 0)
+            );
+            //openingHoursRepository.save(cOpeningHours);
             c.getOpeningHours().add(cOpeningHours);
 
             FilterTag naturTag = new FilterTag("Natur", c);
@@ -71,6 +91,8 @@ public class AttractionsInitializer {
 
             attractionRepository.save(c);
             filterTagRepository.save(naturTag);
+
+            cOpeningHours.setAttraction(c);
             openingHoursRepository.save(cOpeningHours);
 
             for(String tag : findTagService.readAllTags()) {
