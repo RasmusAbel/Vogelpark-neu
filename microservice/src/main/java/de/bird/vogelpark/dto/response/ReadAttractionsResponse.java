@@ -35,6 +35,8 @@ public class ReadAttractionsResponse {
 public record ReadAttractionsResponse(
         String name,
         String description,
+
+        String imageUrl,
         List<OpeningHoursResponse> openingHoursResponses,
         List<String> filterTagResponses
 ) { }

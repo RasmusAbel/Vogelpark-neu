@@ -56,6 +56,7 @@ public class ReadAttractionsService {
             ReadAttractionsResponse nextResponse = new ReadAttractionsResponse(
                     attraction.getName(),
                     attraction.getDescription(),
+                    attraction.getImageUrl(),
                     openingHoursResponses,
                     filterTagResponses
             );

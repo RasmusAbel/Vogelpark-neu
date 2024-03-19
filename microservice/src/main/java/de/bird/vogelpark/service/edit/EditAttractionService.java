@@ -122,6 +122,7 @@ public class EditAttractionService {
                 FilterTag newTag = new FilterTag(tagNameToAdd, attr);
                 filterTagRepository.save(newTag);
                 attr.getFilterTags().add(newTag);
+                attractionRepository.save(attr);
             }
         }
     }

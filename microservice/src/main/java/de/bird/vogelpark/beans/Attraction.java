@@ -20,6 +20,9 @@ public class Attraction {
     @Column
     private String description;
 
+    @Column
+    private String imageUrl;
+
     @OneToMany(mappedBy = "attraction", cascade = CascadeType.ALL)
     private Set<OpeningHours> openingHours = new HashSet<>();
 
@@ -65,13 +68,11 @@ public class Attraction {
         return tours;
     }
 
-    @Override
-    public String toString() {
-        return "attraction: [id: " + id +
-                ", name: " + name +
-                ", description: " + description +
-                ", number of opening hours: " + openingHours.size() +
-                ", number of tags: " + filterTags.size() +
-                "]";
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 }
