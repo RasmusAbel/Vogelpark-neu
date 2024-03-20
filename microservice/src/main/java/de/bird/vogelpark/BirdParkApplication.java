@@ -39,10 +39,10 @@ public class BirdParkApplication implements CommandLineRunner {
 	public void run(String... args) {
 		logger.info("BirdParkApplication has been started...");
 
-		//databaseDeleter.delete();
+		databaseDeleter.delete();
 
-		//birdParkBasicInfoDBInitializer.initialize();
-		//attractionsInitializer.initialize();
-		//toursInitializer.initialize();
+		birdParkBasicInfoDBInitializer.initialize();
+		attractionsInitializer.initialize();
+		toursInitializer.initialize();
 	}
 }
