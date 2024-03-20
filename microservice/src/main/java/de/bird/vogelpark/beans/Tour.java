@@ -70,6 +70,10 @@ public class Tour {
         return attractions;
     }
 
+    public void setAttractions(Set<Attraction> attractions) {
+        this.attractions = attractions;
+    }
+
     public String getImageUrl() {
         return imageUrl;
     }

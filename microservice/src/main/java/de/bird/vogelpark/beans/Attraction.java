@@ -2,9 +2,7 @@ package de.bird.vogelpark.beans;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -74,5 +72,13 @@ public class Attraction {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public void setOpeningHours(Set<OpeningHours> openingHours) {
+        this.openingHours = openingHours;
+    }
+
+    public void setFilterTags(Set<FilterTag> filterTags) {
+        this.filterTags = filterTags;
     }
 }
