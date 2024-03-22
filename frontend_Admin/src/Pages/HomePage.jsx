@@ -2,28 +2,71 @@ import React from 'react';
 
 class HomePage extends React.Component {
   render() {
-    const { textFields } = this.props;
+    const { textFields, isEditing, onEdit, onSave } = this.props;
+
     return (
-      <div>
-        <img src="https://cdn.discordapp.com/attachments/723252229317853284/1212009496168108062/image.png?ex=65f046cd&is=65ddd1cd&hm=d7776bfae439f1f98d46ba8b03e2f91f172fc6262982f08e59553d56ba6cf918&" alt="Home logo" style={{ position: 'absolute', top: '-250px', left: '20px', width: '150px', height: '150px', marginBottom: '200px' }} />
-        {Object.entries(textFields).map(([key, value], index) => (
-          <div
-            key={index}
-            style={{ 
-              position: 'absolute', 
-              top: `${50 + index * 50}px`, 
-              left: '500px', 
-              width: '400px', // Hier ändere die Breite des Textfeld-Containers
-              fontSize: '16px', 
-              color: 'black' 
-            }}
-          >
-            <div>{key}: {value}</div>
+      <div style={{ margin: '20px' }}>
+        {/* Textfelder anzeigen oder bearbeiten */}
+        {isEditing ? (
+          <div>
+            {Object.entries(textFields).map(([key, value], index) => (
+              <div key={index} style={{ marginBottom: '10px' }}>
+                <label style={{ marginRight: '10px' }}>{key}:</label>
+                <input
+                  type="text"
+                  value={value}
+                  onChange={(e) => this.handleChange(key, e.target.value)}
+                />
+              </div>
+            ))}
+            {/* Hinzufügen des Felds zum Löschen eines Wochentags */}
+            <div key="WochentagToDelete" style={{ marginBottom: '10px' }}>
+              <label style={{ marginRight: '10px' }}>Wochentag zu löschen:</label>
+              <input
+                type="text"
+                value={textFields.WochentagToDelete}
+                onChange={(e) => this.handleChange('WochentagToDelete', e.target.value)}
+              />
+            </div>
+            <button onClick={onSave} style={{ marginTop: '10px' }}>Speichern</button>
           </div>
-        ))}
+        ) : (
+          <div>
+            <div style={{ marginBottom: '10px' }}>
+              <span style={{ marginRight: '10px' }}>Name:</span>
+              <span>{textFields.Name}</span>
+            </div>
+            <div style={{ marginBottom: '10px' }}>
+              <span style={{ marginRight: '10px' }}>Adresse:</span>
+              <span>{textFields.Adresse}</span>
+            </div>
+            <div style={{ marginBottom: '10px' }}>
+              <span style={{ marginRight: '10px' }}>Beschreibung:</span>
+              <span>{textFields.Beschreibung}</span>
+            </div>
+            {/* Hinzufügen der neuen Felder */}
+            <div style={{ marginBottom: '10px' }}>
+              <span style={{ marginRight: '10px' }}>Wochentag:</span>
+              <span>{textFields.Wochentag}</span>
+            </div>
+            <div style={{ marginBottom: '10px' }}>
+              <span style={{ marginRight: '10px' }}>Öffnungszeit:</span>
+              <span>{textFields.Oeffnungszeit}</span>
+            </div>
+            <div style={{ marginBottom: '10px' }}>
+              <span style={{ marginRight: '10px' }}>Schließzeit:</span>
+              <span>{textFields.Schließzeit}</span>
+            </div>
+            <button onClick={onEdit} style={{ marginTop: '10px' }}>Bearbeiten</button>
+          </div>
+        )}
       </div>
     );
   }
+
+  handleChange = (key, value) => {
+    this.props.onFieldChange(key, value); // Aktualisieren Sie die App-Komponente mit den neuen Werten
+  };
 }
 
 export default HomePage;

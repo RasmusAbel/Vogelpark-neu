@@ -3,7 +3,7 @@ import HomePage from './Pages/HomePage';
 import AttractionsPage from './Pages/AttractionsPage';
 import ToursPage from './Pages/ToursPage';
 
-const backgroundImageUrl = 'placeholder_image.jpg';
+const backgroundImageUrl = 'https://wallpapers.com/images/hd/1920x1080-hd-birds-parrot-uvk51pgfhe5g6geh.jpg';
 
 class App extends React.Component {
   constructor(props) {
@@ -55,6 +55,7 @@ class App extends React.Component {
   render() {
     const { currentPage, textFields } = this.state;
     return (
+      
       <div style={{ position: 'relative' }}>
         <div style={{
           backgroundImage: `url(https://www.restaurant-vogelpark-berghausen.de/uploads/w2hlKvG7/767x0_2000x0/voegel-hintergrund.png)`,
