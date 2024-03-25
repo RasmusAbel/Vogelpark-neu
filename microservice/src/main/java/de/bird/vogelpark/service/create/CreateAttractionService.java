@@ -8,8 +8,7 @@ import de.bird.vogelpark.dto.request.CreateOpeningHoursRequest;
 import de.bird.vogelpark.repositories.AttractionRepository;
 import de.bird.vogelpark.repositories.FilterTagRepository;
 import de.bird.vogelpark.repositories.OpeningHoursRepository;
-import de.bird.vogelpark.validator.OpeningHoursValidationResult;
-import de.bird.vogelpark.validator.OpeningHoursValidator;
+import de.bird.vogelpark.utils.TimeValidator;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -19,26 +18,23 @@ import java.util.Optional;
 @Service
 public class CreateAttractionService {
 
-    private AttractionRepository attractionRepository;
+    private final AttractionRepository attractionRepository;
 
-    private OpeningHoursRepository openingHoursRepository;
+    private final OpeningHoursRepository openingHoursRepository;
 
-    private FilterTagRepository filterTagRepository;
+    private final FilterTagRepository filterTagRepository;
 
-    private CreateTagService createTagService;
+    private final TimeValidator timeValidator;
 
-    private OpeningHoursValidator openingHoursValidator;
 
     public CreateAttractionService(AttractionRepository attractionRepository,
                                    OpeningHoursRepository openingHoursRepository,
                                    FilterTagRepository filterTagRepository,
-                                   CreateTagService createTagService,
-                                   OpeningHoursValidator openingHoursValidator) {
+                                   TimeValidator timeValidator) {
         this.attractionRepository = attractionRepository;
         this.openingHoursRepository = openingHoursRepository;
         this.filterTagRepository = filterTagRepository;
-        this.createTagService = createTagService;
-        this.openingHoursValidator = openingHoursValidator;
+        this.timeValidator = timeValidator;
     }
 
     public ResponseEntity<String> createAttraction(CreateAttractionRequest req) {
@@ -52,9 +48,9 @@ public class CreateAttractionService {
         //Öffnungszeiten müssen auf Gültigkeit geprüft werden, da später sonst Fehler auftreten.
         //Wenn die Öffnungszeiten ungültig sind, soll die Attraktion nicht erzeugt werden.
         for(CreateOpeningHoursRequest createOpHoursReq : req.openingHours()) {
-            OpeningHoursValidationResult validationResult = openingHoursValidator.validate(createOpHoursReq);
-            if(!openingHoursValidator.isValid(validationResult)) {
-                return ResponseEntity.badRequest().body(openingHoursValidator.getValidationMessage(validationResult));
+            String validationResult = timeValidator.validateOpeningHours(createOpHoursReq);
+            if(validationResult != null){
+                return ResponseEntity.badRequest().body(validationResult);
             }
         }
 

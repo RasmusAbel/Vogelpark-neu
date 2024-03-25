@@ -6,8 +6,7 @@ import de.bird.vogelpark.dto.request.CreateOpeningHoursRequest;
 import de.bird.vogelpark.repositories.AttractionRepository;
 import de.bird.vogelpark.repositories.FilterTagRepository;
 import de.bird.vogelpark.repositories.OpeningHoursRepository;
-import de.bird.vogelpark.validator.OpeningHoursValidationResult;
-import de.bird.vogelpark.validator.OpeningHoursValidator;
+import de.bird.vogelpark.utils.TimeValidator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -38,7 +37,7 @@ public class CreateAttractionServiceTest {
     FilterTagRepository filterTagRepository;
 
     @Mock
-    OpeningHoursValidator openingHoursValidator;
+    TimeValidator timeValidator;
 
 
     private final String DESCRIPTION = "description";
@@ -56,8 +55,6 @@ public class CreateAttractionServiceTest {
         when(attractionRepository.findByName(NAME)).thenReturn(Optional.empty());
         when(openingHoursRepository.save(any())).thenReturn(null);
         when(filterTagRepository.save(any())).thenReturn(null);
-        when(openingHoursValidator.validate(openingHoursRequest)).thenReturn(OpeningHoursValidationResult.VALID);
-        when(openingHoursValidator.isValid(OpeningHoursValidationResult.VALID)).thenReturn(true);
 
         ResponseEntity<String> response = service.createAttraction(request);
 
@@ -78,6 +75,22 @@ public class CreateAttractionServiceTest {
         ResponseEntity<String> response = service.createAttraction(request);
 
         assertEquals("Attraction " + NAME + " already exists", response.getBody());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
+    @Test
+    public void testInvalidOpeningHours(){
+        CreateOpeningHoursRequest openingHoursRequest = new CreateOpeningHoursRequest(WEEKDAY, 9,0,99,0);
+        CreateOpeningHoursRequest[] openingHoursRequestArray = {openingHoursRequest};
+        String[] filterTags = {FILTER_TAG};
+        CreateAttractionRequest request = new CreateAttractionRequest(NAME, DESCRIPTION, openingHoursRequestArray, filterTags);
+
+        when(attractionRepository.findByName(NAME)).thenReturn(Optional.empty());
+        when(timeValidator.validateOpeningHours(openingHoursRequest)).thenReturn("Hour must be between 0 and 23");
+
+        ResponseEntity<String> response = service.createAttraction(request);
+
+        assertEquals("Hour must be between 0 and 23", response.getBody());
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
 

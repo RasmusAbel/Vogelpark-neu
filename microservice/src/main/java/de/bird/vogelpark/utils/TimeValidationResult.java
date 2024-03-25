@@ -1,7 +1,7 @@
-package de.bird.vogelpark.validator;
+package de.bird.vogelpark.utils;
 
 
-public enum OpeningHoursValidationResult {
+public enum TimeValidationResult {
     VALID,
     INVALID_HOUR,
     INVALID_MINUTE,

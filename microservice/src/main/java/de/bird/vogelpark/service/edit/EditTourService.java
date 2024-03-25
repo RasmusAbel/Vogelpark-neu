@@ -5,28 +5,26 @@ import de.bird.vogelpark.beans.Tour;
 import de.bird.vogelpark.dto.request.EditTourRequest;
 import de.bird.vogelpark.repositories.AttractionRepository;
 import de.bird.vogelpark.repositories.TourRepository;
-import de.bird.vogelpark.validator.OpeningHoursValidationResult;
-import de.bird.vogelpark.validator.OpeningHoursValidator;
+import de.bird.vogelpark.utils.TimeValidationResult;
+import de.bird.vogelpark.utils.TimeValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class EditTourService {
     private final TourRepository tourRepository;
-    private final OpeningHoursValidator openingHoursValidator;
+    private final TimeValidator timeValidator;
     private final AttractionRepository attractionRepository;
 
     public EditTourService(TourRepository tourRepository,
-                           OpeningHoursValidator openingHoursValidator,
+                           TimeValidator timeValidator,
                            AttractionRepository attractionRepository) {
         this.tourRepository = tourRepository;
-        this.openingHoursValidator = openingHoursValidator;
+        this.timeValidator = timeValidator;
         this.attractionRepository = attractionRepository;
     }
 
@@ -103,14 +101,14 @@ public class EditTourService {
 
         //Wenn die Startzeit geändert werden soll, wird die neue Startzeit validiert
         if(startHour != null && startMinute != null) {
-            OpeningHoursValidationResult startTimeValidationResult = openingHoursValidator.validateValueRange(
+            TimeValidationResult startTimeValidationResult = timeValidator.validateValueRange(
                     startHour, startMinute
             );
 
             //Fehlermeldung an den Client geben, wenn die neue Startzeit ungültig ist
-            if(!openingHoursValidator.isValid(startTimeValidationResult)) {
+            if(!timeValidator.isValid(startTimeValidationResult)) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                        openingHoursValidator.getValidationMessage(startTimeValidationResult)
+                        timeValidator.getValidationMessage(startTimeValidationResult)
                 );
             }
             startTime = LocalTime.of(startHour, startMinute);
@@ -120,24 +118,24 @@ public class EditTourService {
 
         //Wenn die Endzeit geändert werden soll, wird die neue Endzeit validiert
         if(endHour != null && endMinute != null) {
-            OpeningHoursValidationResult endTimeValidationResult = openingHoursValidator.validateValueRange(
+            TimeValidationResult endTimeValidationResult = timeValidator.validateValueRange(
                     endHour, endMinute
             );
 
             //Fehlermeldung an den Client geben, wenn die neue Endzeit ungültig ist
-            if(!openingHoursValidator.isValid(endTimeValidationResult)) {
+            if(!timeValidator.isValid(endTimeValidationResult)) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                        openingHoursValidator.getValidationMessage(endTimeValidationResult)
+                        timeValidator.getValidationMessage(endTimeValidationResult)
                 );
             }
             endTime = LocalTime.of(endHour, endMinute);
         }
 
         //Wenn startTime nach endTime liegt, wird die entsprechende Fehlermeldung zurückgegeben
-        OpeningHoursValidationResult validationResult = openingHoursValidator.validateStartBeforeEnd(startTime, endTime);
-        if(openingHoursValidator.isValid(validationResult)) {
+        TimeValidationResult validationResult = timeValidator.validateStartBeforeEnd(startTime, endTime);
+        if(!timeValidator.isValid(validationResult)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    openingHoursValidator.getValidationMessage(validationResult)
+                    timeValidator.getValidationMessage(validationResult)
             );
         }
 
@@ -169,7 +167,7 @@ public class EditTourService {
             if(foundAttraction.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format(
                         "Attraction with name %s does not exist and therefore" +
-                                "cannot be added to tour %s",
+                                " cannot be added to tour %s",
                         name, tour.getName()
                 ));
             }
