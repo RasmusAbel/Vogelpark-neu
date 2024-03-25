@@ -70,7 +70,7 @@ class AttractionsPage extends React.Component {
     return (
       <div>
         <p style={{ position: 'absolute', top: '-350px', left: '20px', fontSize: '24px', color: '#FFFFFF' }}>Attraktionen</p>
-        <div style={{ position: 'fixed', top: '25%', transform: 'translateY(-50%)', marginLeft: '20vw', marginRight: '20vw', marginTop: '300px', maxHeight: '70vh', overflowY: 'auto' }}>
+        <div style={{ position: 'fixed', top: '35%', transform: 'translateY(-50%)', marginLeft: '25vw', marginRight: '20vw', marginTop: '300px', maxHeight: '70vh', overflowY: 'auto' }}>
           {attractionsToDisplay.map((attraction, index) => (
             <div key={index} style={{ border: '2px solid #006400', marginBottom: '20px', display: 'flex', flexDirection: 'column' }}>
               <div style={{ display: 'flex' }}>
@@ -105,7 +105,7 @@ class AttractionsPage extends React.Component {
             </div>
           ))}
         </div>
-        <div style={{ position: 'fixed', top: '15%', right: '20%', backgroundColor: '#006400', padding: '10px', border: '1px solid #ddd', borderRadius: '5px' }}>
+        <div style={{ position: 'fixed', top: '15%', left: '25%', backgroundColor: '#006400', padding: '10px', border: '1px solid #ddd', borderRadius: '5px' }}>
           <p style={{ fontWeight: 'bold' }}>Alle Tags</p>
           {this.state.allTags.map((tag, tagIndex) => (
             <button key={tagIndex} style={{ marginRight: '5px', backgroundColor: this.state.selectedTags.includes(tag) ? 'blue' : '' }} onClick={() => this.handleTagButtonClick(tag)}>{tag}</button>
