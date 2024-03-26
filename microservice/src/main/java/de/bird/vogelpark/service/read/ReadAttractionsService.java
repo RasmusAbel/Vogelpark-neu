@@ -3,6 +3,7 @@ package de.bird.vogelpark.service.read;
 import de.bird.vogelpark.beans.Attraction;
 import de.bird.vogelpark.beans.FilterTag;
 import de.bird.vogelpark.beans.OpeningHours;
+import de.bird.vogelpark.beans.Tour;
 import de.bird.vogelpark.dto.response.OpeningHoursResponse;
 import de.bird.vogelpark.dto.response.ReadAttractionsResponse;
 import de.bird.vogelpark.repositories.AttractionRepository;
@@ -53,12 +54,18 @@ public class ReadAttractionsService {
                 filterTagResponses.add(tag.getName());
             }
 
+            List<String> tourNames = new ArrayList<>();
+            for (Tour tour : attraction.getTours()) {
+                tourNames.add(tour.getName());
+            }
+
             ReadAttractionsResponse nextResponse = new ReadAttractionsResponse(
                     attraction.getName(),
                     attraction.getDescription(),
                     attraction.getImageUrl(),
                     openingHoursResponses,
-                    filterTagResponses
+                    filterTagResponses,
+                    tourNames
             );
 
             responses.add(nextResponse);

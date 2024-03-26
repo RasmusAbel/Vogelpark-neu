@@ -68,6 +68,8 @@ public class EditTourService {
         }
         removeAttractions(tour, req.attractionNamesToRemove());
 
+        tourRepository.save(tour);
+
         return ResponseEntity.ok(String.format(
                 "Tour %s successfully edited",
                 req.currentName()
