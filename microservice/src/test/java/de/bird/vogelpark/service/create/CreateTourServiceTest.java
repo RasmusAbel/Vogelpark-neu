@@ -42,7 +42,7 @@ public class CreateTourServiceTest {
 
 
         when(tourRepository.findByName(request.name())).thenReturn(Optional.empty());
-        when(timeValidator.validateTimeInput(request.startTimeHour(), request.startTimeMinute(), request.endTimeHour(), request.endTimeMinute())).thenReturn("");
+        when(timeValidator.validateTimeInput(request.startTimeHour(), request.startTimeMinute(), request.endTimeHour(), request.endTimeMinute())).thenReturn(null);
         when(attractionRepository.findByName(attractionNames[0])).thenReturn(Optional.of(attraction));
 
         ResponseEntity<String> response = service.createTour(request);
@@ -71,7 +71,7 @@ public class CreateTourServiceTest {
         CreateTourRequest request = new CreateTourRequest("name", "description", 2555, "imageUrl", 9,0,12,0, attractionNames);
 
         when(tourRepository.findByName(request.name())).thenReturn(Optional.empty());
-        when(timeValidator.validateTimeInput(request.startTimeHour(), request.startTimeMinute(), request.endTimeHour(), request.endTimeMinute())).thenReturn("");
+        when(timeValidator.validateTimeInput(request.startTimeHour(), request.startTimeMinute(), request.endTimeHour(), request.endTimeMinute())).thenReturn(null);
         when(attractionRepository.findByName(attractionNames[0])).thenReturn(Optional.empty());
 
         ResponseEntity<String> response = service.createTour(request);

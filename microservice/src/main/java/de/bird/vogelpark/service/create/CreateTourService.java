@@ -39,7 +39,7 @@ public class CreateTourService {
         //Start- und Endzeit müssen auf Gültigkeit geprüft werden, da später sonst Fehler auftreten.
         //Wenn die Zeiten ungültig sind, soll die Tour nicht erzeugt werden.
         String validationResult = timeValidator.validateTimeInput(request.startTimeHour(), request.startTimeMinute(), request.endTimeHour(), request.endTimeMinute());
-        if(!validationResult.isEmpty()){
+        if(validationResult != null){
             return ResponseEntity.badRequest().body(validationResult);
         }
 
