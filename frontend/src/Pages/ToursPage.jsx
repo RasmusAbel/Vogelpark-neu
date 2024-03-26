@@ -69,17 +69,17 @@ class ToursPage extends React.Component {
     return (
       <div>
         <p style={{ position: 'absolute', top: '-350px', left: '20px', fontSize: '24px', color: '#FFFFFF' }}>Touren</p>
-        <div style={{ position: 'fixed', top: '25%', transform: 'translateY(-50%)', marginLeft: '20vw', marginRight: '20vw', marginTop: '300px', maxHeight: '70vh', overflowY: 'auto' }}>
+        <div style={{ position: 'fixed', top: '35%', transform: 'translateY(-50%)', marginLeft: '25vw', marginRight: '20vw', marginTop: '300px', maxHeight: '70vh', overflowY: 'auto' }}>
           {toursToDisplay.map((tour, index) => (
-            <div key={index} style={{ border: '2px solid #006400', marginBottom: '20px', display: 'flex' }}>
+            <div key={index} style={{ border: '2px solid #006400', marginBottom: '20px', display: 'flex',  flexDirection: 'column' }}>
               <div style={{ display: 'flex' }}>
-                <div style={{ width: '200px', height: '200px', padding: '10px' }}>
+              <div style={{ width: '200px', height: '200px', borderRight: '2px solid #006400', borderBottom: '2px solid #006400', padding: '10px' }}>
                   {/* Hier das Bild */}
                   <img src={tour.imageUrl} alt={tour.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
 
-                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', width: "300px", borderRight: '2px solid #006400' }}>
-                  <div style={{ padding: '10px' }}>
+                <div style={{ display: 'flex' }}>
+                <div style={{ width: '200px', height: '200px', borderRight: '2px solid #006400', borderBottom: '2px solid #006400', padding: '10px' }}>
                     {/* Hier der Tourname */}
                     <p style={{ fontWeight: 'bold', textDecoration: 'underline' }}>{tour.name}</p>
                     {/* Hier die Beschreibung */}
@@ -87,14 +87,12 @@ class ToursPage extends React.Component {
                   </div>
                 </div>
 
-                <div style={{ flex: 2, display: 'flex', flexDirection: 'column', width: "200px", borderRight: '2px solid #006400' }}>
+                <div style={{ flex: 1, padding: '10px' }}>
                   {/* Hier die Zeit */}
                   <div>
                     <p style={{ fontWeight: 'bold', textDecoration: 'underline' }}>Zeit</p>
                     <p>{tour.startTime} - {tour.endTime}</p>
-                  </div>
-                  {/* Hier die Dauer */}
-                  <div>
+                     {/* Hier die Dauer */}
                     <p style={{ fontWeight: 'bold', textDecoration: 'underline' }}>Dauer</p>
                     <p>{tour.duration}</p>
                   </div>
@@ -102,9 +100,9 @@ class ToursPage extends React.Component {
               </div>
 
               {/* Hier die Attraktionen */}
-              <div style={{ padding: '10px' }}>
+              <div style={{ display: 'flex', justifyContent: 'center', borderTop: '2px solid #006400', padding: '10px' }}>
                 {tour.attractionNames.map((attraction, attractionIndex) => (
-                  <div style={{ width: "200px" }}>
+                  <div style={{ width: "200px", justifyContent: 'center',}}>
                     <button key={attractionIndex} style={{ marginRight: '5px', backgroundColor: this.state.selectedAttractions.includes(attraction) ? 'blue' : '' }} onClick={() => this.handleAttractionButtonClick(attraction)}>{attraction}</button>
                   </div>
                 ))}
@@ -112,7 +110,7 @@ class ToursPage extends React.Component {
             </div>
           ))}
         </div>
-        <div style={{ position: 'fixed', top: '15%', right: '20%', backgroundColor: '#006400', padding: '10px', border: '1px solid #ddd', borderRadius: '5px' }}>
+        <div style={{ position: 'fixed', top: '15%', left: '25%', backgroundColor: '#006400', padding: '10px', border: '1px solid #ddd', borderRadius: '5px' }}>
           <p style={{ fontWeight: 'bold' }}>Alle Attraktionen</p>
           {this.state.allAttractions.map((attraction, attractionIndex) => (
             <button key={attractionIndex} style={{ marginRight: '5px', backgroundColor: this.state.selectedAttractions.includes(attraction) ? 'blue' : '' }} onClick={() => this.handleAttractionButtonClick(attraction)}>{attraction}</button>
