@@ -42,7 +42,7 @@ public class EditTourIntTest {
     public void testEditTour() throws Exception {
         String[] attractionNamesToAdd = {"Lehrpfad"};
         String[] attractionNamesToRemove = {"Lehrpfad"};
-        EditTourRequest request = new EditTourRequest("Tour A",
+        EditTourRequest request = new EditTourRequest("Tour B",
                 "newName",
                 "newDescription",
                 321,
