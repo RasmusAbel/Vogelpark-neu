@@ -44,8 +44,9 @@ class ToursPage extends React.Component {
     // Überprüfen, ob Attraktionen ausgewählt sind
     if (this.state.selectedAttractions.length > 0) {
       // Konstruieren Sie die URL basierend auf den ausgewählten Attraktionen
-      const attractionParams = this.state.selectedAttractions.map(attraction => `attractionName=${encodeURIComponent(attraction)}`).join('&');
-      const url = `http://localhost:8080/tours-by-attractions?${attractionParams}`;
+      console.log("ist hier rein gekommen");
+      const attractionParams = this.state.selectedAttractions.map(attraction => `attractionName=${attraction}`).join('&');
+      const url = `http://localhost:8080/tours-by-attractions/?${attractionParams}`;
 
       // Hier senden Sie eine AJAX-Anfrage, um die Touren nach den ausgewählten Attraktionen zu filtern
       fetch(url)
@@ -103,7 +104,7 @@ class ToursPage extends React.Component {
               {/* Hier die Attraktionen */}
               <div style={{ display: 'flex', justifyContent: 'center', borderTop: '2px solid #006400', padding: '10px' }}>
                 {tour.attractionNames.map((attraction, attractionIndex) => (
-                  <div style={{ width: "200px", justifyContent: 'center',}}>
+                  <div style={{ width: "200px", justifyContent: 'center'}}>
                     <button key={attractionIndex} style={{ marginRight: '5px', backgroundColor: this.state.selectedAttractions.includes(attraction) ? 'blue' : 'black' }} onClick={() => this.handleAttractionButtonClick(attraction)}>{attraction}</button>
                   </div>
                 ))}

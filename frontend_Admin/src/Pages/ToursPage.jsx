@@ -58,7 +58,7 @@ class ToursPage extends React.Component {
     if (this.state.selectedAttractions.length > 0) {
       // Konstruieren Sie die URL basierend auf den ausgewählten Attraktionen
       const attractionParams = this.state.selectedAttractions.map(attraction => `attractionName=${encodeURIComponent(attraction)}`).join('&');
-      const url = `http://localhost:8080/tours-by-attractions?${attractionParams}`;
+      const url = `http://localhost:8080/tours-by-attractions/?${attractionParams}`;
 
       // Hier senden Sie eine AJAX-Anfrage, um die Touren nach den ausgewählten Attraktionen zu filtern
       fetch(url)
@@ -260,7 +260,7 @@ this.setState(prevState => ({
     
     console.log('TourName:', tourToDelete);
     
-    fetch(`http://localhost:8080/delete-tour/${tourToDelete}`, {
+    fetch(`http://localhost:8080/delete-tour/?tourName=${tourToDelete}`, {
         method: 'DELETE',
       })
       .then(response => {
