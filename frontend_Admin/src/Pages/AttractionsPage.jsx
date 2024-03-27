@@ -347,27 +347,26 @@ handleAddTag = (attractionName) => {
 
     const openingHours = attraction.openingHoursResponses;
     console.log("op hours", openingHours);
-    // for(let i = 0; i < openingHours.length; i++){
-    //   var { hours, minutes } = this.splitTimeAttribute(openingHours[i].startTime);
-    //   const newStartTimeHour = hours;
-    //   const newStartTimeMinute = minutes;
-    //   const endTime = openingHours.endTime
-    //   var { hours, minutes } = this.splitTimeAttribute(openingHours[0].endTime);
-    //   const newEndTimeHour = hours;
-    //   const newEndTimeMinute = minutes;
-    // }
-   
-    // console.log("op hours", openingHours[0].startTime);
-    // var { hours, minutes } = this.splitTimeAttribute(openingHours[0].startTime);
-    // const newStartTimeHour = hours;
-    // const newStartTimeMinute = minutes;
-    // const endTime = openingHours.endTime
-    // var { hours, minutes } = this.splitTimeAttribute(openingHours[0].endTime);
-    // const newEndTimeHour = hours;
-    // const newEndTimeMinute = minutes;
 
-    // console.log("startTImeHOur", newStartTimeHour);
-    // console.log("endtimehour", newEndTimeHour);
+
+    var newOpeningHours= [];
+
+    
+    console.log("opeing hour 0 bei update attraktio", openingHours[0]);
+
+    for (let i = 0; i < openingHours.length; i++) {
+      newOpeningHours.push({weekday: openingHours[i].weekday,
+        startTimeHour: this.splitTimeAttribute(openingHours[i].startTime).hours,
+        startTimeMinute: this.splitTimeAttribute(openingHours[i].startTime).minutes,
+        endTimeHour: this.splitTimeAttribute(openingHours[i].endTime).hours,
+        endTimeMinute: this.splitTimeAttribute(openingHours[i].endTime).minutes,
+    });
+    }
+
+    console.log("EndTimeHour", this.splitTimeAttribute(openingHours[0].endTime).hours);
+
+    console.log("starttimeHour bei update attraktio", newOpeningHours);
+    console.log("opening hours ids to remov", this.state.openingHourIdsToRemove);
     
     const {newImageUrl }= this.state;
     console.log("die Url", newImageUrl);
@@ -380,7 +379,8 @@ handleAddTag = (attractionName) => {
         currentName: attraction.name,
         newName: attraction.updatedName || attraction.name,
         newDescription: attraction.description,
-        openingHoursToAdd: openingHours,
+        newImageUrl: newImageUrl,
+        openingHoursToAdd: newOpeningHours,
         openingHourIdsToRemove: this.state.openingHourIdsToRemove, // Verwenden Sie das aktualisierte Array
         filterTagsToAdd: attraction.filterTagResponses, // Hier verwenden wir attraction.filterTagResponses
         filterTagsToRemove: attraction.filterTagsToRemove
@@ -458,7 +458,7 @@ handleAddTag = (attractionName) => {
     
     console.log('Attraction name:', attractionToDelete);
     
-    fetch(`http://localhost:8080/delete-attraction/${attractionToDelete}`, {
+    fetch(`http://localhost:8080/delete-attraction/?attractionName=${attractionToDelete}`, {
         method: 'DELETE',
       })
       .then(response => {
