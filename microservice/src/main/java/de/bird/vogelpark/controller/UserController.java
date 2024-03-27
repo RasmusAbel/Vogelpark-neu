@@ -42,7 +42,7 @@ public class UserController {
         return readAttractionsService.readAttractionsByTags(tags);
     }
 
-    @GetMapping(path = "tours-by-attractions")
+    @GetMapping(path = "/tours-by-attractions/")
     public List<ReadTourResponse> getToursByAttractionNames(@RequestParam("attractionName") List<String> attractionNames) {
         return readToursService.readToursByAttractionNames(attractionNames);
     }
@@ -57,7 +57,7 @@ public class UserController {
         return findTagService.readAllTags();
     }
 
-    @GetMapping(path = "all-tours/")
+    @GetMapping(path = "/all-tours/")
     public List<ReadTourResponse> getAllTours() {
         return readToursService.readAllTours();
     }

@@ -68,10 +68,10 @@ public class EditAttractionServiceTest {
     }
 
     /**
-     * Testing to edit an existent attraction
+     * Testing to edit a not existent attraction
      */
     @Test
-    public void testAttractionExistent() {
+    public void testAttractionNotExistent() {
         CreateOpeningHoursRequest openingHoursRequest = new CreateOpeningHoursRequest(WEEKDAY, 9,0,12,0);
         EditAttractionRequest req = new EditAttractionRequest(CURRENT_NAME, NEW_NAME, NEW_DESCRIPTION, new CreateOpeningHoursRequest[]{openingHoursRequest}, OPENING_HOURS_IDS_TO_REMOVE, TAGS_TO_ADD, TAGS_TO_REMOVE);
 
