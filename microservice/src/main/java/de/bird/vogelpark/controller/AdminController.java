@@ -46,6 +46,7 @@ public class AdminController {
         this.createTourService = createTourService;
     }
 
+    @CrossOrigin(origins = "*")
     @DeleteMapping(path = "/delete-attraction/")
     public ResponseEntity<String> deleteAttraction(@RequestParam("attractionName") String attractionName) {
         return deleteAttractionService.deleteAttraction(attractionName);
@@ -60,10 +61,13 @@ public class AdminController {
         return createTourService.createTour(createTourRequest);
     }
 
+    @CrossOrigin(origins = "*")
     @DeleteMapping(path = "/delete-tag/")
     public ResponseEntity<String> deleteTag(@RequestParam("tagName") String tagName) {
         return deleteTagService.deleteTag(tagName);
     }
+
+    @CrossOrigin(origins = "*")
     @DeleteMapping(path = "/delete-tour/")
     public ResponseEntity<String> deleteTour(@RequestParam("tourName") String tourName) {
         return deleteTourService.deleteTour(tourName);

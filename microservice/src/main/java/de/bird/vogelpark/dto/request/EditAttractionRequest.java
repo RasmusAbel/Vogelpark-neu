@@ -44,6 +44,7 @@ public record EditAttractionRequest(
         String currentName,
         String newName,
         String newDescription,
+        String newImageUrl,
         CreateOpeningHoursRequest[] openingHoursToAdd,
         Long[] openingHourIdsToRemove,
         String[] filterTagsToAdd,

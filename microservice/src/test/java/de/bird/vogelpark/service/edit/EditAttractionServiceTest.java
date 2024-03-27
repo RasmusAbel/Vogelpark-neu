@@ -40,6 +40,7 @@ public class EditAttractionServiceTest {
     private final String CURRENT_NAME = "CurrentName";
     private final String NEW_NAME = "NewName";
     private final String NEW_DESCRIPTION = "NewDescription";
+    private final String NEW_IMAGE_URL = "NewImageUrl";
     private final String[] TAGS_TO_ADD = {"FilterTagToAdd"};
     private final String[] TAGS_TO_REMOVE = {"FilterTagToRemove"};
     private final Long[] OPENING_HOURS_IDS_TO_REMOVE = {1234L};
@@ -57,7 +58,7 @@ public class EditAttractionServiceTest {
         attraction.getOpeningHours().add(openingHoursToRemove);
         attraction.getFilterTags().add(filterTagToRemove);
         CreateOpeningHoursRequest openingHoursRequest = new CreateOpeningHoursRequest(WEEKDAY, 9,0,12,0);
-        EditAttractionRequest req = new EditAttractionRequest(CURRENT_NAME, NEW_NAME, NEW_DESCRIPTION, new CreateOpeningHoursRequest[]{openingHoursRequest}, OPENING_HOURS_IDS_TO_REMOVE, TAGS_TO_ADD, TAGS_TO_REMOVE);
+        EditAttractionRequest req = new EditAttractionRequest(CURRENT_NAME, NEW_NAME, NEW_DESCRIPTION, NEW_IMAGE_URL, new CreateOpeningHoursRequest[]{openingHoursRequest}, OPENING_HOURS_IDS_TO_REMOVE, TAGS_TO_ADD, TAGS_TO_REMOVE);
 
         when(attractionRepository.findByName(req.currentName())).thenReturn(Optional.of(attraction));
         when(openingHoursRepository.findById(OPENING_HOURS_IDS_TO_REMOVE[0])).thenReturn(Optional.of(openingHoursToRemove));
@@ -73,7 +74,7 @@ public class EditAttractionServiceTest {
     @Test
     public void testAttractionExistent() {
         CreateOpeningHoursRequest openingHoursRequest = new CreateOpeningHoursRequest(WEEKDAY, 9,0,12,0);
-        EditAttractionRequest req = new EditAttractionRequest(CURRENT_NAME, NEW_NAME, NEW_DESCRIPTION, new CreateOpeningHoursRequest[]{openingHoursRequest}, OPENING_HOURS_IDS_TO_REMOVE, TAGS_TO_ADD, TAGS_TO_REMOVE);
+        EditAttractionRequest req = new EditAttractionRequest(CURRENT_NAME, NEW_NAME, NEW_DESCRIPTION, NEW_IMAGE_URL, new CreateOpeningHoursRequest[]{openingHoursRequest}, OPENING_HOURS_IDS_TO_REMOVE, TAGS_TO_ADD, TAGS_TO_REMOVE);
 
         when(attractionRepository.findByName(req.currentName())).thenReturn(Optional.empty());
 
@@ -94,7 +95,7 @@ public class EditAttractionServiceTest {
         attraction.getOpeningHours().add(openingHoursToRemove);
         attraction.getFilterTags().add(existentFilterTag);
         CreateOpeningHoursRequest openingHoursRequest = new CreateOpeningHoursRequest(WEEKDAY, 9,0,12,0);
-        EditAttractionRequest req = new EditAttractionRequest(CURRENT_NAME, NEW_NAME, NEW_DESCRIPTION, new CreateOpeningHoursRequest[]{openingHoursRequest}, OPENING_HOURS_IDS_TO_REMOVE, TAGS_TO_ADD, TAGS_TO_REMOVE);
+        EditAttractionRequest req = new EditAttractionRequest(CURRENT_NAME, NEW_NAME, NEW_DESCRIPTION, NEW_IMAGE_URL, new CreateOpeningHoursRequest[]{openingHoursRequest}, OPENING_HOURS_IDS_TO_REMOVE, TAGS_TO_ADD, TAGS_TO_REMOVE);
 
         when(attractionRepository.findByName(req.currentName())).thenReturn(Optional.of(attraction));
         when(openingHoursRepository.findById(OPENING_HOURS_IDS_TO_REMOVE[0])).thenReturn(Optional.of(openingHoursToRemove));

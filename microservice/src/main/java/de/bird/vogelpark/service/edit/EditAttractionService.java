@@ -51,6 +51,10 @@ public class EditAttractionService {
             attr.setDescription(editAttractionRequest.newDescription());
         }
 
+        if(editAttractionRequest.newImageUrl() != null) {
+            attr.setImageUrl(editAttractionRequest.newImageUrl());
+        }
+
         removeOpeningHours(attr, editAttractionRequest.openingHourIdsToRemove());
         addOpeningHours(attr, editAttractionRequest.openingHoursToAdd());
         removeFilterTags(attr, editAttractionRequest.filterTagsToRemove());

@@ -50,8 +50,5 @@ public record EditBirdParkBasicInfoRequest(
         if(openingHourIdsToRemove == null) {
             openingHourIdsToRemove = new Long[0];
         }
-        if(newLogoUrl == null) {
-            newLogoUrl = "";
-        }
     }
 }
