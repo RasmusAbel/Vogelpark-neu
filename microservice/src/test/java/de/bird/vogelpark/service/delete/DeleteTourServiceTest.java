@@ -40,7 +40,7 @@ public class DeleteTourServiceTest {
     }
 
     @Test
-    public void testDeleteExistentTour(){
+    public void testDeleteNotExistentTour(){
         when(tourRepository.findByName(TOUR_NAME)).thenReturn(Optional.empty());
 
         ResponseEntity<String> response = service.deleteTour(TOUR_NAME);
