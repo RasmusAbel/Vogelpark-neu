@@ -8,15 +8,12 @@ class ToursPage extends React.Component {
     filteredTours: [], // Hier werden die gefilterten Touren gespeichert
   };
 
+  //Daten aus der Datenbank holen
   componentDidMount() {
-    // Hier senden Sie eine AJAX-Anfrage, um Daten von der REST-API abzurufen
     fetch('http://localhost:8080/all-tours/')
       .then(response => response.json())
       .then(data => {
-        // Aktualisieren Sie den Zustand mit den empfangenen Tourdaten
         this.setState({ tours: data });
-
-        // Extrahieren Sie alle verfügbaren Attraktionen
         const allAttractions = [...new Set(data.flatMap(tour => tour.attractionNames))];
         this.setState({ allAttractions });
       })
@@ -25,41 +22,33 @@ class ToursPage extends React.Component {
       });
   }
 
+  //Attraktion wird geklickt zum filtern
   handleAttractionButtonClick = (attraction) => {
-    // Überprüfen, ob die Attraktion bereits ausgewählt ist
     if (this.state.selectedAttractions.includes(attraction)) {
-      // Attraktion ist bereits ausgewählt, entfernen Sie sie aus den ausgewählten Attraktionen
       this.setState(prevState => ({
         selectedAttractions: prevState.selectedAttractions.filter(selectedAttraction => selectedAttraction !== attraction)
       }), this.filterTours);
     } else {
-      // Attraktion ist nicht ausgewählt, fügen Sie sie zu den ausgewählten Attraktionen hinzu
       this.setState(prevState => ({
         selectedAttractions: [...prevState.selectedAttractions, attraction]
       }), this.filterTours);
     }
   }
 
+  //attraktionen werden werden gefiltert
   filterTours = () => {
-    // Überprüfen, ob Attraktionen ausgewählt sind
     if (this.state.selectedAttractions.length > 0) {
-      // Konstruieren Sie die URL basierend auf den ausgewählten Attraktionen
-      console.log("ist hier rein gekommen");
       const attractionParams = this.state.selectedAttractions.map(attraction => `attractionName=${attraction}`).join('&');
       const url = `http://localhost:8080/tours-by-attractions/?${attractionParams}`;
-
-      // Hier senden Sie eine AJAX-Anfrage, um die Touren nach den ausgewählten Attraktionen zu filtern
       fetch(url)
         .then(response => response.json())
         .then(data => {
-          // Aktualisieren Sie den Zustand mit den gefilterten Touren
           this.setState({ filteredTours: data });
         })
         .catch(error => {
           console.error('Fehler beim Abrufen der gefilterten Touren:', error);
         });
     } else {
-      // Keine Attraktionen ausgewählt, verwenden Sie die vollständige Liste der Touren
       this.setState({ filteredTours: this.state.tours });
     }
   }

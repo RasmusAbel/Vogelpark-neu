@@ -4,9 +4,6 @@ import React from 'react';
 class HomePage extends React.Component {
   render() {
     const { textFields, openingHours, LogoUrl } = this.props;
-    console.log("tfhp", textFields)
-    console.log("ophp", openingHours)
-    console.log("lohp", LogoUrl)
     return (
       <div>
         <img src= {LogoUrl} alt="Home logo" style={{ position: 'absolute', top: '-250px', left: '20px', width: '150px', height: '150px', marginBottom: '200px' }} />
@@ -18,7 +15,7 @@ class HomePage extends React.Component {
               position: 'absolute', 
               top: `${-300 + index * 50}px`, 
               left: '300px', 
-              width: '400px', // Hier ändere die Breite des Textfeld-Containers
+              width: '400px',
               fontSize: '16px', 
             }}
           >
@@ -33,7 +30,7 @@ class HomePage extends React.Component {
       position: 'absolute', 
       top: `${-300 + index * 100}px`, 
       left: '900px', 
-      width: '400px', // Hier ändere die Breite des Textfeld-Containers
+      width: '400px',
       fontSize: '16px', 
       borderRight: '2px solid #006400', 
       borderBottom: '2px solid #006400',

@@ -19,10 +19,11 @@ class App extends React.Component {
         Oeffnungszeit: '',
         Schließzeit: ''
       },
-      basicData: null // Fügen Sie basicData zum Zustand hinzu
+      basicData: null
     };
   }
 
+  //Daten aus Datenbank werden gelesen
   componentDidMount() {
     this.fetchData();
   }
@@ -34,7 +35,6 @@ class App extends React.Component {
         throw new Error('Fehler beim Abrufen der Daten: ' + response.statusText);
       }
       const data = await response.json();
-      console.log('Empfangene Daten:', data); // Debugging-Ausgabe
       const { name, address, description, openingHoursResponses, logoUrl } = data;
 
       const firstOpeningHours = openingHoursResponses[0];
@@ -50,27 +50,29 @@ class App extends React.Component {
           Oeffnungszeit: startTime,
           Schließzeit: endTime
         },
-        basicData: data // Speichern Sie die abgerufenen Daten in basicData
+        basicData: data
       });
     } catch (error) {
       console.error('Fehler beim Abrufen der Daten:', error);
     }
   }
 
+  //Seiten wechsel
   gotoPage = (page) => {
     this.setState({ currentPage: page });
   }
 
+  //Basic Data wird bearbeitet
   handleEdit = () => {
     this.setState(prevState => ({
       isEditing: !prevState.isEditing
     }));
   }
 
+  //Speichern Button wird gedrückt
   handleSave = async () => {
-    const { textFields, basicData } = this.state; // Hinzufügen von basicData zum Zustand
-  
-    // Konstruktion des Request-Body
+    const { textFields, basicData } = this.state;
+
     const requestBody = {
       newName: textFields.Name,
       newAddress: textFields.Adresse,
@@ -80,16 +82,12 @@ class App extends React.Component {
       newLogoUrl: textFields.LogoUrl
     };
   
-    // Überprüfen, ob das Feld für den zu löschenden Wochentag nicht leer ist
     if (textFields.WochentagToDelete) {
-      // Finden der ID für den zu löschenden Wochentag und Hinzufügen zur Liste der zu löschenden IDs
-      const weekdayId = this.findWeekdayId(textFields.WochentagToDelete, basicData); // Übergeben von basicData als Argument
+      const weekdayId = this.findWeekdayId(textFields.WochentagToDelete, basicData); 
       requestBody.openingHourIdsToRemove.push(weekdayId);
     }
   
-    // Überprüfen, ob das Feld für den neuen Wochentag nicht leer ist
     if (textFields.Wochentag) {
-      // Hinzufügen der neuen Öffnungszeit, wenn ein Wochentag angegeben ist
       requestBody.openingHoursToAdd.push({
         weekday: textFields.Wochentag,
         startTimeHour: textFields.Oeffnungszeit.split(':')[0],
@@ -118,7 +116,7 @@ class App extends React.Component {
     }
   }
   
-
+  //DIe Textfelder werdne bearbeitet
   handleFieldChange = (key, value) => {
     this.setState(prevState => ({
       textFields: {
@@ -130,28 +128,23 @@ class App extends React.Component {
 
   // Funktion zum Finden der Wochentags-ID
   findWeekdayId = (weekDay, basicData) => {
-    console.log('Weekday:', weekDay);
-    console.log('Basic Data:', basicData);
     if (!basicData || !basicData.openingHoursResponses || basicData.openingHoursResponses.length === 0) {
       console.error('Ungültige oder leere Daten für das Finden der Wochentags-ID');
-      return '0'; // Rückgabe von '0' anstelle von ''
+      return '0'; 
     }
   
     const openingHoursResponses = basicData.openingHoursResponses;
-    console.log('Öffnungszeiten:', openingHoursResponses); // Debugging-Ausgabe
     for (let i = 0; i < openingHoursResponses.length; i++) {
       if (openingHoursResponses[i].weekday === weekDay) {
-        console.log("ID", openingHoursResponses[i].id.toString());
-        return openingHoursResponses[i].id.toString(); // ID als Zeichenfolge zurückgeben
+        return openingHoursResponses[i].id.toString(); 
       }
     }
-    console.error('Kein Wochentag gefunden:', weekDay); // Debugging-Ausgabe
-    return '0'; // Rückgabe von '0' anstelle von ''
+    console.error('Kein Wochentag gefunden:', weekDay); 
+    return '0'; 
   }
   
-
   render() {
-    const { currentPage, textFields, isEditing, basicData } = this.state; // Fügen Sie basicData zum destrukturierten Zustand hinzu
+    const { currentPage, textFields, isEditing, basicData } = this.state; 
     return (
       <div style={{ position: 'relative' }}>
         <div style={{

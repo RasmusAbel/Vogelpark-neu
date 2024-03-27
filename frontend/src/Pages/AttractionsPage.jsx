@@ -8,15 +8,12 @@ class AttractionsPage extends React.Component {
     filteredAttractions: [], // Hier werden die gefilterten Attraktionen gespeichert
   };
 
+  //Daten aus der Datenbank holen
   componentDidMount() {
-    // Hier senden Sie eine AJAX-Anfrage, um Daten von der REST-API abzurufen
     fetch('http://localhost:8080/all-attractions/')
       .then(response => response.json())
       .then(data => {
-        // Aktualisieren Sie den Zustand mit den empfangenen Attraktionsdaten
         this.setState({ attractions: data });
-
-        // Extrahieren Sie alle verfügbaren Tags
         const allTags = [...new Set(data.flatMap(attraction => attraction.filterTagResponses))];
         this.setState({ allTags });
       })
@@ -25,44 +22,36 @@ class AttractionsPage extends React.Component {
       });
   }
 
+  //Tag wurde geklickt für das sortieren
   handleTagButtonClick = (tag) => {
-    // Überprüfen, ob der Tag bereits ausgewählt ist
     if (this.state.selectedTags.includes(tag)) {
-      // Tag ist bereits ausgewählt, entfernen Sie ihn aus den ausgewählten Tags
       this.setState(prevState => ({
         selectedTags: prevState.selectedTags.filter(selectedTag => selectedTag !== tag)
       }), this.filterAttractions);
     } else {
-      // Tag ist nicht ausgewählt, fügen Sie ihn zu den ausgewählten Tags hinzu
       this.setState(prevState => ({
         selectedTags: [...prevState.selectedTags, tag]
       }), this.filterAttractions);
     }
   }
 
+  //Attraktionen werden nach gewählten tags sortiert
   filterAttractions = () => {
-    // Überprüfen Sie, ob Tags ausgewählt sind
     if (this.state.selectedTags.length > 0) {
-        // Konstruieren Sie die URL basierend auf den ausgewählten Tags
         const tagParams = this.state.selectedTags.map(tag => `tag=${tag}`).join('&');
         const url = `http://localhost:8080/attractions-by-tags/?${tagParams}`;
-
-        // Hier senden Sie eine AJAX-Anfrage, um die Attraktionen nach den ausgewählten Tags zu filtern
         fetch(url)
             .then(response => response.json())
-            .then(data => {
-                // Aktualisieren Sie den Zustand mit den gefilterten Attraktionen
+            .then(data => {n
                 this.setState({ filteredAttractions: data });
             })
             .catch(error => {
                 console.error('Fehler beim Abrufen der gefilterten Attraktionen:', error);
             });
     } else {
-        // Keine Tags ausgewählt, verwenden Sie die vollständige Liste der Attraktionen
         this.setState({ filteredAttractions: this.state.attractions });
     }
 }
-
 
   render() {
     const attractionsToDisplay = this.state.selectedTags.length > 0 ? this.state.filteredAttractions : this.state.attractions;

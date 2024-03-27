@@ -16,20 +16,17 @@ class ToursPage extends React.Component {
     newEndTimeMinute: '', // Globaler Konstante für die Endzeit Minute
     attractionToAdd: '', // Globaler Konstante für den hinzuzufügenden Tag
     attractionToRemove: '', // Globaler Konstante für den zu entfernenden Tag
-    tourToDelete: '',
-    newImageUrl: '',
-    openingHourIdsToRemove: [],
+    tourToDelete: '', //Tour die gelöscht werden soll
+    newImageUrl: '', //Neue Bild Url
+    openingHourIdsToRemove: [], //OpeningHours die gelöscht werden sollen
   };
 
+  //Daten aus der Datenbank
   componentDidMount() {
-    // Hier senden Sie eine AJAX-Anfrage, um Daten von der REST-API abzurufen
     fetch('http://localhost:8080/all-tours/')
       .then(response => response.json())
       .then(data => {
-        // Aktualisieren Sie den Zustand mit den empfangenen Tourdaten
         this.setState({ tours: data });
-
-        // Extrahieren Sie alle verfügbaren Attraktionen
         const allAttractions = [...new Set(data.flatMap(tour => tour.attractionNames))];
         this.setState({ allAttractions });
       })
@@ -38,50 +35,45 @@ class ToursPage extends React.Component {
       });
   }
 
+  //Button wird gedrückt zum sortieren der Attraktionen
   handleAttractionButtonClick = (attraction) => {
-    // Überprüfen, ob die Attraktion bereits ausgewählt ist
     if (this.state.selectedAttractions.includes(attraction)) {
-      // Attraktion ist bereits ausgewählt, entfernen Sie sie aus den ausgewählten Attraktionen
       this.setState(prevState => ({
         selectedAttractions: prevState.selectedAttractions.filter(selectedAttraction => selectedAttraction !== attraction)
       }), this.filterTours);
     } else {
-      // Attraktion ist nicht ausgewählt, fügen Sie sie zu den ausgewählten Attraktionen hinzu
       this.setState(prevState => ({
         selectedAttractions: [...prevState.selectedAttractions, attraction]
       }), this.filterTours);
     }
   }
 
+  //Touren werden nach attraktionen die ausgewählt sind gefiltert
   filterTours = () => {
-    // Überprüfen, ob Attraktionen ausgewählt sind
     if (this.state.selectedAttractions.length > 0) {
-      // Konstruieren Sie die URL basierend auf den ausgewählten Attraktionen
       const attractionParams = this.state.selectedAttractions.map(attraction => `attractionName=${encodeURIComponent(attraction)}`).join('&');
       const url = `http://localhost:8080/tours-by-attractions/?${attractionParams}`;
-
-      // Hier senden Sie eine AJAX-Anfrage, um die Touren nach den ausgewählten Attraktionen zu filtern
       fetch(url)
         .then(response => response.json())
         .then(data => {
-          // Aktualisieren Sie den Zustand mit den gefilterten Touren
           this.setState({ filteredTours: data });
         })
         .catch(error => {
           console.error('Fehler beim Abrufen der gefilterten Touren:', error);
         });
     } else {
-      // Keine Attraktionen ausgewählt, verwenden Sie die vollständige Liste der Touren
       this.setState({ filteredTours: this.state.tours });
     }
   }
 
+  //Tour Daten werden bearbeitet
   handleTourChange(index, field, value) {
     const tours = [...this.state.tours];
     tours[index][field] = value;
     this.setState({ tours });
   }
 
+  //Dauer wird bearbeitet
   handleDurationChange(tourIndex, field, value){
     this.setState(prevState => {
       const tours = [...prevState.tours];
@@ -93,23 +85,24 @@ class ToursPage extends React.Component {
         tours[field === 'startTime' ? 'startTimeMinute' : 'endTimeMinute'] = minutes;
     }
     tours[tourIndex] = tour;
-    console.log(tours);
     return {tours};
   });
   }
 
+  //Preis wird bearbeitet
   handlePriceChange(index, field, value){
     const tours = [...this.state.tours];
     tours[index][field] = value;
     this.setState({ tours });
   }
 
+  //Methode um die Zeiten in Minuten und Stunden aufzuteilen
   splitTimeAttribute(timeAttribute) {
     const [hours, minutes] = timeAttribute.split(':').map(part => parseInt(part));
-    console.log("Minute:", minutes, "hours", hours);
     return { hours, minutes };
 }
 
+  //Speichern Button wird gedrückt
   handleSaveClick(index){
     const { tours } = this.state;
     const tour = tours[index];
@@ -119,42 +112,18 @@ class ToursPage extends React.Component {
     }
 
     tour.attractionNames = tour.attractionNames.filter(attraction => attraction !== "");
-    // Current Name aus dem nicht bearbeitbaren Textfeld extrahieren
+
     const currentName = tour.name;
-  
-    // New Name aus dem bearbeitbaren Textfeld ziehen
-    const newName = tour.updatedName || tour.name;
-  
-    // Neue Werte aus dem State lesen
+    const newName = tour.updatedName || tour.name; 
     const newDescription = tour.description;
-
     const newPrice = tour.price;
-
-    const { newImageUrl } = this.state;
-    
-    console.log("bildUrl", newImageUrl)
-
-   
-    
+    const { newImageUrl } = this.state;  
     const newStartTime = tour.startTime;
-    //const newStartTimeMinute = minutes;
-
     const newEndTime = tour.endTime;
-    //const newStartTimeMinute = minutes;
-
-    
-    // Überprüfen, ob neue Zeitdaten vorhanden sind, sonst die vorhandenen Daten verwenden
-   
-  
     const attractions = tour.attractionNames;
-    const filterAttractionsToAdd = tour.attractionNames; // Hier setzen wir filterTagsToAdd auf die gewünschten Daten
-  
+    const filterAttractionsToAdd = tour.attractionNames; 
     const filterAttractionsToRemove = tour.filterAttractionsToRemove;
-   
-    console.log("AttractiontoAdd", filterAttractionsToAdd);
-    console.log("Attractionssvariable", tour.attractionNames);
 
-// Update der Attraktion mit den aktuellen Daten
 this.setState(prevState => ({
   currentName,
   newName,
@@ -162,31 +131,15 @@ this.setState(prevState => ({
   newPrice,
   newStartTime,
   newEndTime,
- //newStartTimeHour, // Alle Öffnungszeiten hinzufügen
-  //newStartTimeMinute,
-  //newEndTimeHour,
-  //newEndTimeMinute,
   filterAttractionsToAdd,
-  filterAttractionsToRemove: (tour.filterAttractionsToRemove && tour.filterAttractionsToRemove.length > 0) ? tour.filterAttractionsToRemove : [""], // Setzen Sie filterAttractionsToRemove auf ein Array mit einem leeren String, wenn es leer oder nicht definiert ist
+  filterAttractionsToRemove: (tour.filterAttractionsToRemove && tour.filterAttractionsToRemove.length > 0) ? tour.filterAttractionsToRemove : [""], 
   }), () => {
-  // Aufrufen der Methode zur Aktualisierung der Attraktionsdaten
   this.updateTourData(tour);
- // window.location.href = 'http://localhost:8082'
-});
-
-
-  
-    // Aktualisierte Daten der Attraktion in der Konsole ausgeben
-    console.log("Aktuelle Daten der Attraktion:");
-    console.log("Current Name:", currentName);
-    console.log("New Name:", newName);
-    console.log("New Description:", newDescription);
-    console.log("Tags:", attractions);
-    console.log("Tags hinzuzufügen:", filterAttractionsToAdd);
-    console.log("Tags zu entfernen:", filterAttractionsToRemove);
-    
+  window.location.href = 'http://localhost:8082'
+});    
   }
 
+  //Attraktionen werden bearbeitet
   handleAttractionChange (tourIndex, AttractionIndex, newValue) {
     this.setState(prevState => {
       const tours = [...prevState.tours];
@@ -195,11 +148,8 @@ this.setState(prevState => ({
       let filterAttractionsToAdd = tour.filterAttractionsToAdd ? [...tour.filterAttractionsToAdd] : [];
       let filterAttractionsToRemove = tour.filterAttractionsToRemove ? [...tour.filterAttractionsToRemove] : [];
   
-      // Änderung des bearbeitbaren Tags
       updatedAttractions[AttractionIndex] = newValue;
-      console.log("toadd", filterAttractionsToAdd);
-      console.log("toremove", filterAttractionsToRemove);
-      // Überprüfen, ob der Tag geändert wurde und ihn den entsprechenden Listen hinzufügen oder entfernen
+
       if (!filterAttractionsToRemove.includes(tour.attractionNames[AttractionIndex]) && newValue !== tour.attractionNames[AttractionIndex]) {
         filterAttractionsToRemove.push(tour.attractionNames[AttractionIndex]);
         filterAttractionsToAdd.push(newValue);
@@ -209,28 +159,21 @@ this.setState(prevState => ({
         const indexToAdd = filterAttractionsToAdd.indexOf(newValue);
         filterAttractionsToAdd.splice(indexToAdd, 1);
       }
-      
-      // Entfernen von Duplikaten in filterAttractionsToRemove, die auch in filterattractionsToAdd vorhanden sind
+
       filterAttractionsToRemove = filterAttractionsToRemove.filter(attraction => !filterAttractionsToAdd.includes(attraction));
 
       tour.attractionNames = updatedAttractions;
       tour.filterAttractionsToAdd = filterAttractionsToAdd;
       tour.filterAttractionsToRemove = filterAttractionsToRemove;
       tours[tourIndex] = tour;
-      console.log("Toure", tours)
       return { tours };
     });
   }
 
+  //Attraktine wird hinzugefügt
   handleAddAttraction = (index) => {
     const { tours, attractionToAdd } = this.state;
     const tour = tours[index];
-    // Fügen Sie hier den neuen Tag zu den Daten hinzu
-    // Verwenden Sie dazu den Wert von 'tagToAdd'
-  
-    // Beispielhaft: Aktualisieren Sie den Zustand mit dem neuen Tag
-    console.log('Attraktionsname:', attractionToAdd);
-    console.log('TourName:', tour.name);
     
     fetch('http://localhost:8080/edit-tour/', {
         method: 'PUT',
@@ -247,18 +190,15 @@ this.setState(prevState => ({
           throw new Error('Fehler beim Speichern der Daten');
         }
         console.log('Daten erfolgreich gespeichert');
-        // Hier können Sie entsprechende Aktionen ausführen, nachdem die Daten erfolgreich gespeichert wurden
       })
       .catch(error => {
         console.error('Fehler beim Speichern der Daten:', error);
-        // Hier können Sie entsprechende Fehlerbehandlung durchführen
       });
   }
 
+  //Tour wird gelöscht
   handleDeleteTour = () => {
     const { tourToDelete } = this.state;
-    
-    console.log('TourName:', tourToDelete);
     
     fetch(`http://localhost:8080/delete-tour/?tourName=${tourToDelete}`, {
         method: 'DELETE',
@@ -268,14 +208,13 @@ this.setState(prevState => ({
           throw new Error('Fehler beim Löschen der Tour');
         }
         console.log('Tour erfolgreich gelöscht');
-        // Hier können Sie entsprechende Aktionen ausführen, nachdem die Tour erfolgreich gelöscht wurde
       })
       .catch(error => {
         console.error('Fehler beim Löschen der Tour:', error);
-        // Hier können Sie entsprechende Fehlerbehandlung durchführen
       });
   }
 
+  //Neu Tour wird erstellt
   handleAddNewTour = () => {
     fetch('http://localhost:8080/create-tour/', {
       method: 'POST',
@@ -304,11 +243,9 @@ this.setState(prevState => ({
     });
   }
 
+  //Tour Daten werden aktualisiert
   updateTourData(tour) {
-// PUT-Anfrage an die REST-API senden
-console.log("Tags die hinzugefügt werden:",  tour.attractionNames); // Hier verwenden wir attraction.filterTagResponses
-console.log("Tags die entfernt werden:",  tour.filterAttractionsToRemove);
-console.log("die tour", tour)
+
 var { hours, minutes } = this.splitTimeAttribute(tour.startTime);
 const newStartTimeHour = hours;
 const newStartTimeMinute = minutes;
@@ -317,8 +254,7 @@ var { hours, minutes } = this.splitTimeAttribute(tour.endTime);
 const newEndTimeHour = hours;
 const newEndTimeMinute = minutes;
 const {newImageUrl }= this.state;
-console.log("die Url", newImageUrl);
-console.log("startZeit stunde", newStartTimeHour)
+
 fetch('http://localhost:8080/edit-tour/', {
   method: 'PUT',
   headers: {
@@ -344,11 +280,9 @@ fetch('http://localhost:8080/edit-tour/', {
     throw new Error('Fehler beim Speichern der Daten');
   }
   console.log('Daten erfolgreich gespeichert');
-  // Hier können Sie entsprechende Aktionen ausführen, nachdem die Daten erfolgreich gespeichert wurden
 })
 .catch(error => {
   console.error('Fehler beim Speichern der Daten:', error);
-  // Hier können Sie entsprechende Fehlerbehandlung durchführen
 });
   }
 
