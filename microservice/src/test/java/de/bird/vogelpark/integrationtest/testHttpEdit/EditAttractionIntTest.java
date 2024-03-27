@@ -43,7 +43,7 @@ public class EditAttractionIntTest {
         CreateOpeningHoursRequest[] openingHours = {openingHoursRequest};
         String[] filterTagsToAdd = {"filterTag"};
         String[] filterTagsToRemove = {"Natur"};
-        EditAttractionRequest request = new EditAttractionRequest("Lehrpfad", "newName", "newDescription", openingHours, new Long[]{}, filterTagsToAdd, filterTagsToRemove);
+        EditAttractionRequest request = new EditAttractionRequest("Lehrpfad", "newName", "newDescription", "newImageUrl", openingHours, new Long[]{}, filterTagsToAdd, filterTagsToRemove);
 
 
         mockMvc.perform(put("/edit-attraction/")
@@ -66,7 +66,7 @@ public class EditAttractionIntTest {
         CreateOpeningHoursRequest[] openingHours = {openingHoursRequest};
         String[] filterTagsToAdd = {"filterTag"};
         String[] filterTagsToRemove = {"Natur"};
-        EditAttractionRequest request = new EditAttractionRequest("c", "newName", "newDescription", openingHours, new Long[]{}, filterTagsToAdd, filterTagsToRemove);
+        EditAttractionRequest request = new EditAttractionRequest("c", "newName", "newDescription", "newImageUrl", openingHours, new Long[]{}, filterTagsToAdd, filterTagsToRemove);
 
 
         mockMvc.perform(put("/edit-attraction/")
