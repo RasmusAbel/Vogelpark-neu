@@ -76,7 +76,7 @@ class AttractionsPage extends React.Component {
               <div style={{ display: 'flex' }}>
                 <div style={{ width: '200px', height: '200px', borderRight: '2px solid #006400', borderBottom: '2px solid #006400', padding: '10px' }}>
                   {/* Hier das Logo */}
-                  {/* Wenn ein Logo in den Daten vorhanden wäre, könnte es hier eingefügt werden */}
+                  <img src={attraction.imageUrl} alt={attraction.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
                 <div style={{ flex: 1, padding: '10px', borderRight: '2px solid #006400' }}>
                   {/* Hier der Attraktionsname */}
@@ -95,11 +95,19 @@ class AttractionsPage extends React.Component {
                     ))}
                   </div>
                 </div>
+                <div style={{ flex: 1, padding: '10px', borderLeft: '2px solid #006400'}}>
+                  <div>
+                    <p style={{ fontWeight: 'bold', textDecoration: 'underline' }}>Touren</p>
+                    {attraction.tourNames.map((tourName, index) => (
+                      <p key={index} style={{ marginBottom: '2px' }}>{tourName}</p>
+                    ))}
+                  </div>
+                </div>
               </div>
               <div style={{ display: 'flex', justifyContent: 'center', borderTop: '2px solid #006400', padding: '10px' }}>
                 {/* Hier die Tags als Buttons */}
                 {attraction.filterTagResponses.map((tag, tagIndex) => (
-                  <button key={tagIndex} style={{ marginRight: '5px', backgroundColor: this.state.selectedTags.includes(tag) ? 'blue' : '' }} onClick={() => this.handleTagButtonClick(tag)}>{tag}</button>
+                  <button key={tagIndex} style={{ marginRight: '5px', backgroundColor: this.state.selectedTags.includes(tag) ? 'blue' : 'black' }} onClick={() => this.handleTagButtonClick(tag)}>{tag}</button>
                 ))}
               </div>
             </div>
@@ -108,7 +116,7 @@ class AttractionsPage extends React.Component {
         <div style={{ position: 'fixed', top: '15%', left: '25%', backgroundColor: '#006400', padding: '10px', border: '1px solid #ddd', borderRadius: '5px' }}>
           <p style={{ fontWeight: 'bold' }}>Alle Tags</p>
           {this.state.allTags.map((tag, tagIndex) => (
-            <button key={tagIndex} style={{ marginRight: '5px', backgroundColor: this.state.selectedTags.includes(tag) ? 'blue' : '' }} onClick={() => this.handleTagButtonClick(tag)}>{tag}</button>
+            <button key={tagIndex} style={{ marginRight: '5px', backgroundColor: this.state.selectedTags.includes(tag) ? 'blue' : 'black' }} onClick={() => this.handleTagButtonClick(tag)}>{tag}</button>
           ))}
         </div>
       </div>

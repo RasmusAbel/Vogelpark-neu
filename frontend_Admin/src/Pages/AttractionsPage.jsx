@@ -17,6 +17,8 @@ class AttractionsPage extends React.Component {
     endTimeMinute: '', // Globaler Konstante für die Endzeit Minute
     tagToAdd: '', // Globaler Konstante für den hinzuzufügenden Tag
     tagToRemove: '', // Globaler Konstante für den zu entfernenden Tag
+    attractionToDelete: '',
+    newImageUrl: '',
     openingHourIdsToRemove: [],
   };
 
@@ -197,6 +199,7 @@ splitTimeAttribute(timeAttribute) {
     });
   
     // IDs der Öffnungszeiten zum Entfernen hinzufügen, wenn der Wochentag bereits vorhanden ist
+
     const openingHourIdsToRemove = [];
     if (attraction.openingHoursResponses.some(openingHour => openingHour.weekday !== openingHours.weekday)) {
       console.log("openinghours", openingHours.weekday)
@@ -214,7 +217,7 @@ splitTimeAttribute(timeAttribute) {
     
     // Setzen von openingHourIdsToRemove mit den entsprechenden Werten aus der Attraktion
     const openingHourIdsToRemoveFromAttraction = attraction.openingHourIdsToRemove || [];
-    const openingHourIdsToRemoveUpdated = [...openingHourIdsToRemoveFromAttraction, ...openingHourIdsToRemove];
+    // const openingHourIdsToRemoveUpdated = [...openingHourIdsToRemoveFromAttraction, ...openingHourIdsToRemove];
   
    // Update der Attraktion mit den aktuellen Daten
 // Update der Attraktion mit den aktuellen Daten
@@ -231,7 +234,7 @@ this.setState(prevState => ({
 }), () => {
   // Aufrufen der Methode zur Aktualisierung der Attraktionsdaten
   this.updateAttractionData(attraction);
-  window.location.href = 'http://localhost:8082'
+  //window.location.href = 'http://localhost:8082'
 });
 
 
@@ -245,7 +248,7 @@ this.setState(prevState => ({
     console.log("Tags:", tags);
     console.log("Tags hinzuzufügen:", filterTagsToAdd);
     console.log("Tags zu entfernen:", filterTagsToRemove);
-    console.log("StartStunde:", startTimeHour);
+   // console.log("StartStunde:", startTimeHour);
     console.log("StartMinute:", startTimeMinute);
     console.log("EndStunde:", endTimeHour);
     console.log("EndMinute:", endTimeMinute);
@@ -341,6 +344,33 @@ handleAddTag = (attractionName) => {
     // PUT-Anfrage an die REST-API senden
     console.log("Tags die hinzugefügt werden:",  attraction.filterTagResponses); // Hier verwenden wir attraction.filterTagResponses
     console.log("Tags die entfernt werden:",  attraction.filterTagsToRemove);
+
+    const openingHours = attraction.openingHoursResponses;
+    console.log("op hours", openingHours);
+    // for(let i = 0; i < openingHours.length; i++){
+    //   var { hours, minutes } = this.splitTimeAttribute(openingHours[i].startTime);
+    //   const newStartTimeHour = hours;
+    //   const newStartTimeMinute = minutes;
+    //   const endTime = openingHours.endTime
+    //   var { hours, minutes } = this.splitTimeAttribute(openingHours[0].endTime);
+    //   const newEndTimeHour = hours;
+    //   const newEndTimeMinute = minutes;
+    // }
+   
+    // console.log("op hours", openingHours[0].startTime);
+    // var { hours, minutes } = this.splitTimeAttribute(openingHours[0].startTime);
+    // const newStartTimeHour = hours;
+    // const newStartTimeMinute = minutes;
+    // const endTime = openingHours.endTime
+    // var { hours, minutes } = this.splitTimeAttribute(openingHours[0].endTime);
+    // const newEndTimeHour = hours;
+    // const newEndTimeMinute = minutes;
+
+    // console.log("startTImeHOur", newStartTimeHour);
+    // console.log("endtimehour", newEndTimeHour);
+    
+    const {newImageUrl }= this.state;
+    console.log("die Url", newImageUrl);
     fetch('http://localhost:8080/edit-attraction/', {
       method: 'PUT',
       headers: {
@@ -350,13 +380,7 @@ handleAddTag = (attractionName) => {
         currentName: attraction.name,
         newName: attraction.updatedName || attraction.name,
         newDescription: attraction.description,
-        openingHoursToAdd: attraction.openingHoursResponses.map(openingHour => ({
-          weekday: openingHour.weekday,
-          startTimeHour: attraction.startTimeHour,
-          startTimeMinute: attraction.startTimeMinute,
-          endTimeHour: attraction.endTimeHour,
-          endTimeMinute: attraction.endTimeMinute
-        })),
+        openingHoursToAdd: openingHours,
         openingHourIdsToRemove: this.state.openingHourIdsToRemove, // Verwenden Sie das aktualisierte Array
         filterTagsToAdd: attraction.filterTagResponses, // Hier verwenden wir attraction.filterTagResponses
         filterTagsToRemove: attraction.filterTagsToRemove
@@ -380,6 +404,7 @@ handleAddTag = (attractionName) => {
   handleAddNewWeekday = (index) => {
     const { attractions } = this.state;
     const attraction = attractions[index];
+    
   
     fetch('http://localhost:8080/edit-attraction/', {
       method: 'PUT',
@@ -426,7 +451,28 @@ handleAddTag = (attractionName) => {
       // Hier können Sie entsprechende Fehlerbehandlung durchführen
     });
   }
-  
+
+
+  handleDeleteAttraction= () => {
+    const { attractionToDelete } = this.state;
+    
+    console.log('Attraction name:', attractionToDelete);
+    
+    fetch(`http://localhost:8080/delete-attraction/${attractionToDelete}`, {
+        method: 'DELETE',
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Fehler beim Löschen der Attraktion');
+        }
+        console.log('Attraktion erfolgreich gelöscht');
+        // Hier können Sie entsprechende Aktionen ausführen, nachdem die Tour erfolgreich gelöscht wurde
+      })
+      .catch(error => {
+        console.error('Fehler beim Löschen der Attraktion:', error);
+        // Hier können Sie entsprechende Fehlerbehandlung durchführen
+      });
+  }
 
   handleAddNewAttraction = () => {
     fetch('http://localhost:8080/create-attraction/', {
@@ -468,21 +514,24 @@ handleAddTag = (attractionName) => {
 
     return (
       <div>
-        <p style={{ position: 'absolute', top: '-350px', left: '20px', fontSize: '24px', color: '#FFFFFF' }}>Attraktionen</p>
-        <div style={{ position: 'fixed', top: '35%', transform: 'translateY(-50%)', marginLeft: '25vw', marginRight: '20vw', marginTop: '300px', maxHeight: '70vh', overflowY: 'auto' }}>
+        <p style={{ position: 'absolute', top: '-350px', bottom: '5%', left: '20px', fontSize: '24px', color: '#FFFFFF' }}>Attraktionen</p>
+        <div style={{ position: 'fixed', top: '35%', transform: 'translateY(-50%)', marginLeft: '25vw', marginBottom: "5vw", marginRight: '20vw', marginTop: '300px', maxHeight: '70vh', overflowY: 'auto' }}>
           {attractionsToDisplay.map((attraction, index) => (
-            <div key={index} style={{ border: '2px solid #006400', marginBottom: '20px', display: 'flex', flexDirection: 'column' }}>
+            <div key={index} style={{ border: '2px solid #006400', marginBottom: '3%', display: 'flex', flexDirection: 'column',overflowX: 'auto', overflowY: 'auto', borderCollapse: 'collapse', width: '100%' }}>
               <div style={{ display: 'flex' }}>
                 <div style={{ width: '300px', height: '200px', borderRight: '2px solid #006400', borderBottom: '2px solid #006400', padding: '10px' }}>
                   {/* Hier das Logo */}
-                  {/* Wenn ein Logo in den Daten vorhanden wäre, könnte es hier eingefügt werden */}
+                  <img src={attraction.imageUrl} alt={attraction.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
                 <div style={{ flex: 1, padding: '10px', borderRight: '2px solid #006400' }}>
                   {/* Nicht bearbeitbares Textfeld für den aktuellen Namen */}
+                  <p style={{ fontWeight: 'bold' }}>Alter Attraktions Name</p>
                   <input type="text" value={attraction.name} readOnly />
                   {/* Attraktionsname als bearbeitbares Textfeld */}
-                  <input type="text" value={attraction.updatedName || attraction.name} onChange={(e) => this.handleAttractionChange(index, 'updatedName', e.target.value)} />
+                  <p style={{ fontWeight: 'bold' }}>Neuer Tour Name</p>
+                  <input type="text" value={attraction.updatedName} onChange={(e) => this.handleAttractionChange(index, 'updatedName', e.target.value)} />
                   {/* Beschreibung als bearbeitbares Textfeld */}
+                  <p style={{ fontWeight: 'bold' }}>Beschreibung</p>
                   <textarea value={attraction.description} onChange={(e) => this.handleAttractionChange(index, 'description', e.target.value)} />
                 </div>
                 {/* Hier die Spalte für die Öffnungszeiten */}
@@ -490,31 +539,37 @@ handleAddTag = (attractionName) => {
                   <div>
                     <p style={{ fontWeight: 'bold', textDecoration: 'underline' }}>Öffnungszeiten</p>
                     {/* Öffnungszeiten als bearbeitbare Textfelder */}
+
                     {attraction.openingHoursResponses.map((openingHour, hourIndex) => (
                       <div key={hourIndex}>
+                        <div style={{ flex: 1, padding: '10px'}}>
                         <input type="text" value={openingHour.weekday} onChange={(e) => this.handleOpeningHoursChange(index, hourIndex, 'weekday', e.target.value)} />
                         von
                         <input type="text" value={openingHour.startTime} onChange={(e) => this.handleOpeningHoursChange(index, hourIndex, 'startTime', e.target.value)} />
                         bis
                         <input type="text" value={openingHour.endTime} onChange={(e) => this.handleOpeningHoursChange(index, hourIndex, 'endTime', e.target.value)} />
                       </div>
+                      </div>
                     ))}
                   </div>
                 </div>
                 {/* "Speichern"-Button neben jeder Tabellenspalte */}
                 <div style={{ flex: '0 0 auto', padding: '10px' }}>
-                  <button onClick={() => this.handleSaveClick(index)}>Speichern</button>
+                  <button style={{backgroundColor: 'black' }} onClick={() => this.handleSaveClick(index)}>Speichern</button>
                   <div style={{ flex: '0 0 auto', padding: '10px' }}>
-                <button onClick={() => this.handleAddNewWeekday(index)}>Neuer Wochentag</button>
+                <button style={{backgroundColor: 'black' }} onClick={() => this.handleAddNewWeekday(index)}>Neuer Wochentag</button>
                 </div>
                 <div style={{ flex: '0 0 auto', padding: '10px' }}>
-                  <button onClick={() => this.handleRemoveWeekday(index, this.state.weekdayToRemove)}>Wochentag Löschen</button>
+                  <button style={{backgroundColor: 'black' }} onClick={() => this.handleRemoveWeekday(index, this.state.weekdayToRemove)}>Wochentag Löschen</button>
                   <div style={{ flex: '0 0 auto', padding: '10px' }}>
                       <input type="text" value={this.state.weekdayToRemove} onChange={(e) => this.setState({ weekdayToRemove: e.target.value })} placeholder="Wochentag Name" />
                       </div>
                       <div style={{ flex: '0 0 auto', padding: '10px' }}>
-                      <button onClick={() => this.handleAddTag(attraction.name)}>Tag Hinzufügen</button>
+                      <button style={{backgroundColor: 'black' }} onClick={() => this.handleAddTag(attraction.name)}>Tag Hinzufügen</button>
                   </div>
+                  <div style={{ flex: '0 0 auto', padding: '10px' }}>
+                      <input type="text" value={this.state.newImageUrl} onChange={(e) => this.setState({index, newImageUrl: e.target.value })} placeholder="Bild URl" />
+                      </div>
                   </div>
                 </div>
               </div>
@@ -524,9 +579,7 @@ handleAddTag = (attractionName) => {
                   <div key={tagIndex} style={{ marginRight: '5px' }}>
                     {/* Bearbeitbares Textfeld für den Tag */}
                     <input type="text" value={tag} onChange={(e) => this.handleTagChange(index, tagIndex, e.target.value)} />
-                    {/* Nicht bearbeitbares Textfeld für den Tag */}
-                    <input type="text" value={tag} readOnly />
-                  </div>
+                    </div>
                 ))}
               </div>
             </div>
@@ -535,13 +588,20 @@ handleAddTag = (attractionName) => {
         <div style={{ position: 'fixed', top: '15%', left: '25%', backgroundColor: '#006400', padding: '10px', border: '1px solid #ddd', borderRadius: '5px' }}>
           <p style={{ fontWeight: 'bold' }}>Alle Tags</p>
           {this.state.allTags.map((tag, tagIndex) => (
-            <button key={tagIndex} style={{ marginRight: '5px', backgroundColor: this.state.selectedTags.includes(tag) ? 'blue' : '' }} onClick={() => this.handleTagButtonClick(tag)}>
+            <button key={tagIndex} style={{ marginRight: '5px', backgroundColor: this.state.selectedTags.includes(tag) ? 'blue' : 'black' }} onClick={() => this.handleTagButtonClick(tag)}>
             {tag}
           </button>
         ))}
       </div>
       <div style={{ padding: '10px' }}>
-            <button onClick={this.handleAddNewAttraction}>Neue Attraktion hinzufügen</button>
+            <button style={{backgroundColor: 'black' }} onClick={this.handleAddNewAttraction}>Neue Attraktion hinzufügen</button>
+          </div>
+          <div style={{ padding: '10px' }}>
+            <button style={{backgroundColor: 'black' }} onClick={this.handleDeleteAttraction}>Attraktion Loeschen</button>
+            <div style={{ flex: '0 0 auto', padding: '10px' }}>
+              <input type="text" value={this.state.attractionToDelete} onChange={(e) => {e.stopPropagation(); this.setState({ attractionToDelete: e.target.value });
+              }}  placeholder="Zu löschende Attraktion" />
+            </div>
           </div>
     </div>
     

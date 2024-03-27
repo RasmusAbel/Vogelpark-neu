@@ -3,21 +3,21 @@ import HomePage from './Pages/HomePage';
 import AttractionsPage from './Pages/AttractionsPage';
 import ToursPage from './Pages/ToursPage';
 
-const backgroundImageUrl = 'https://wallpapers.com/images/hd/1920x1080-hd-birds-parrot-uvk51pgfhe5g6geh.jpg';
+document.body.style.backgroundColor = '#1a1a1a';
+
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       currentPage: null,
+      LogoUrl: '',
       textFields: {
         Name: '',
-        Adresse: '',
-        Beschreibung: '',
-        Wochentag: '',
-        Oeffnungszeit: '',
-        Schließzeit: ''
-      }
+        Address: '',
+        Description: '',
+      },
+      openingHours: [] // Hier wird ein leeres Array initialisiert
     };
   }
 
@@ -25,38 +25,38 @@ class App extends React.Component {
     fetch('http://localhost:8080/bird-park-basic-info/')
       .then(response => response.json())
       .then(data => {
-        const { name, address, description, openingHoursResponses } = data;
-        // Extrahieren der ersten Öffnungszeit
-        const firstOpeningHours = openingHoursResponses[0];
-        // Aktualisieren des Zustands mit den extrahierten Daten
+        const { name, address, description, openingHoursResponses, logoUrl } = data;
+        console.log('Erhaltene Daten:', data); // Konsolenausgabe der erhaltenen Daten
+  
+        // Speichern der Öffnungszeiten als Array im Zustand
         this.setState({
+          LogoUrl: logoUrl,
           textFields: {
             ...this.state.textFields,
             Name: name,
-            Adresse: address,
-            Beschreibung: description,
-            Wochentag: firstOpeningHours.weekday,
-            Oeffnungszeit: firstOpeningHours.startTime,
-            Schließzeit: firstOpeningHours.endTime
-          }
+            Address: address,
+            Description: description,
+          },
+          openingHours: openingHoursResponses // Speichern des Arrays der Öffnungszeiten
         });
-
-        console.log(this.state.textFields);
+  
+        console.log('Aktualisierter Zustand:', this.state); // Konsolenausgabe des aktualisierten Zustands
       })
       .catch(error => {
         console.error('Fehler beim Abrufen der Daten:', error);
       });
   }
+  
+  
 
   gotoPage = (page) => {
     this.setState({ currentPage: page });
   }
 
   render() {
-    const { currentPage, textFields } = this.state;
+    const { currentPage, textFields, openingHours, LogoUrl  } = this.state;
     return (
-      
-      <div style={{ position: 'relative' }}>
+      <div style={{position: 'relative' }}>
         <div style={{
           backgroundImage: `url(https://www.restaurant-vogelpark-berghausen.de/uploads/w2hlKvG7/767x0_2000x0/voegel-hintergrund.png)`,
           backgroundSize: 'cover',
@@ -73,7 +73,7 @@ class App extends React.Component {
           <button style={{ position: 'fixed', top: '25px', left: 'calc(50% + 200px)', width: '100px', height: '50px', cursor: 'pointer', marginLeft: '20px', color: '#ffffff', backgroundColor: '#1C7F00', border: 'none', borderRadius: '5px', padding: '5px 10px' }} onClick={() => this.gotoPage('Touren')}>Touren</button>
         </div>
 
-        {currentPage === null && <HomePage textFields={textFields} />}
+        {currentPage === null && <HomePage textFields={textFields} openingHours={openingHours} LogoUrl={LogoUrl} />}
         {currentPage === 'Attraktionen' && <AttractionsPage />}
         {currentPage === 'Touren' && <ToursPage />}
       </div>

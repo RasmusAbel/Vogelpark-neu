@@ -3,7 +3,7 @@ import HomePage from './Pages/HomePage';
 import AttractionsPage from './Pages/AttractionsPage';
 import ToursPage from './Pages/ToursPage';
 
-const backgroundImageUrl = 'https://wallpapers.com/images/hd/1920x1080-hd-birds-parrot-uvk51pgfhe5g6geh.jpg';
+document.body.style.backgroundColor = '#1a1a1a';
 
 class App extends React.Component {
   constructor(props) {
@@ -14,6 +14,7 @@ class App extends React.Component {
         Name: '',
         Adresse: '',
         Beschreibung: '',
+        LogoUrl: '',
         Wochentag: '',
         Oeffnungszeit: '',
         Schließzeit: ''
@@ -34,7 +35,7 @@ class App extends React.Component {
       }
       const data = await response.json();
       console.log('Empfangene Daten:', data); // Debugging-Ausgabe
-      const { name, address, description, openingHoursResponses } = data;
+      const { name, address, description, openingHoursResponses, logoUrl } = data;
 
       const firstOpeningHours = openingHoursResponses[0];
       const { weekday, startTime, endTime } = firstOpeningHours;
@@ -44,6 +45,7 @@ class App extends React.Component {
           Name: name,
           Adresse: address,
           Beschreibung: description,
+          LogoUrl: logoUrl,
           Wochentag: weekday,
           Oeffnungszeit: startTime,
           Schließzeit: endTime
@@ -74,7 +76,8 @@ class App extends React.Component {
       newAddress: textFields.Adresse,
       newDescription: textFields.Beschreibung,
       openingHoursToAdd: [],
-      openingHourIdsToRemove: []
+      openingHourIdsToRemove: [],
+      newLogoUrl: textFields.LogoUrl
     };
   
     // Überprüfen, ob das Feld für den zu löschenden Wochentag nicht leer ist

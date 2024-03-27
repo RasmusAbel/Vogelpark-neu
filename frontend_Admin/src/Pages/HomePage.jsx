@@ -25,7 +25,7 @@ class HomePage extends React.Component {
               <input
                 type="text"
                 value={textFields.WochentagToDelete}
-                onChange={(e) => this.handleChange('WochentagToDelete', e.target.value)}
+                onChange={(e) => this.handleChange('Wochentag zu löschen:', e.target.value)}
               />
             </div>
             <button onClick={onSave} style={{ marginTop: '10px' }}>Speichern</button>
@@ -56,6 +56,10 @@ class HomePage extends React.Component {
             <div style={{ marginBottom: '10px' }}>
               <span style={{ marginRight: '10px' }}>Schließzeit:</span>
               <span>{textFields.Schließzeit}</span>
+            </div>
+            <div style={{ marginBottom: '10px' }}>
+              <span style={{ marginRight: '10px' }}>Logo Url:</span>
+              <span>{textFields.LogoUrl}</span>
             </div>
             <button onClick={onEdit} style={{ marginTop: '10px' }}>Bearbeiten</button>
           </div>
