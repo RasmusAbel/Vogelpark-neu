@@ -49,7 +49,12 @@ public class AttractionsInitializer {
             //openingHoursRepository.save(aOpeningHours);
 
             a.getOpeningHours().add(aOpeningHours);
+
+            FilterTag aussichtTagA = new FilterTag("Aussicht", a);
+            a.getFilterTags().add(aussichtTagA);
+
             attractionRepository.save(a);
+            filterTagRepository.save(aussichtTagA);
 
             aOpeningHours.setAttraction(a);
             openingHoursRepository.save(aOpeningHours);
@@ -69,7 +74,13 @@ public class AttractionsInitializer {
             //openingHoursRepository.save(bOpeningHours);
             b.getOpeningHours().add(bOpeningHours);
 
+            FilterTag naturTagB = new FilterTag("Natur", b);
+            b.getFilterTags().add(naturTagB);
+            FilterTag tiereTagB = new FilterTag("Tiere", b);
+
             attractionRepository.save(b);
+            filterTagRepository.save(naturTagB);
+            filterTagRepository.save(tiereTagB);
 
             bOpeningHours.setAttraction(b);
             openingHoursRepository.save(bOpeningHours);
@@ -89,11 +100,14 @@ public class AttractionsInitializer {
             //openingHoursRepository.save(cOpeningHours);
             c.getOpeningHours().add(cOpeningHours);
 
-            FilterTag naturTag = new FilterTag("Natur", c);
-            c.getFilterTags().add(naturTag);
+            FilterTag naturTagC = new FilterTag("Natur", c);
+            c.getFilterTags().add(naturTagC);
+            FilterTag lernenTagC = new FilterTag("Lernen", c);
+            c.getFilterTags().add(lernenTagC);
 
             attractionRepository.save(c);
-            filterTagRepository.save(naturTag);
+            filterTagRepository.save(naturTagC);
+            filterTagRepository.save(lernenTagC);
 
             cOpeningHours.setAttraction(c);
             openingHoursRepository.save(cOpeningHours);

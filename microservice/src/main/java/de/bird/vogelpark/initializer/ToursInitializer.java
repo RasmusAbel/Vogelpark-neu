@@ -56,7 +56,7 @@ public class ToursInitializer {
         b.setPriceCents(50);
         b.setStartTime(LocalTime.of(11, 0));
         b.setEndTime(LocalTime.of(15, 0));
-        b.setImageUrl("");
+        b.setImageUrl("https://images.unsplash.com/photo-1577978308655-149c6a11e5b1?q=80&w=2785&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
 
         if(attractionRepository.findByName("Aussichtsturm").isPresent()) {
             Attraction aussichtsturm = attractionRepository.findByName("Aussichtsturm").get();
