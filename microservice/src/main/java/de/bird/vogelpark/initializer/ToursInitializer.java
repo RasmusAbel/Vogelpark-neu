@@ -56,6 +56,38 @@ public class ToursInitializer {
         logger.info("Tour A ends at: " + a.getEndTime());
         logger.info("Tour A duration: " + a.getDurationString());
 
+        Tour b = new Tour();
+        b.setName("Tour B");
+        b.setDescription("Eine andere Tour durch den Park.");
+        b.setPriceCents(50);
+        b.setStartTime(LocalTime.of(11, 0));
+        b.setEndTime(LocalTime.of(15, 0));
+        b.setImageUrl("");
+
+        if(attractionRepository.findByName("Aussichtsturm").isPresent()) {
+            Attraction aussichtsturm = attractionRepository.findByName("Aussichtsturm").get();
+            aussichtsturm.getTours().add(b);
+            b.getAttractions().add(aussichtsturm);
+        }
+
+        if(attractionRepository.findByName("Flugkäfig").isPresent()) {
+            Attraction flugkaefig = attractionRepository.findByName("Flugkäfig").get();
+            flugkaefig.getTours().add(b);
+            b.getAttractions().add(flugkaefig);
+        }
+
+        if(attractionRepository.findByName("Lehrpfad").isPresent()) {
+            Attraction lehrpfad = attractionRepository.findByName("Lehrpfad").get();
+            lehrpfad.getTours().add(b);
+            b.getAttractions().add(lehrpfad);
+        }
+
+        tourRepository.save(b);
+
+        logger.info("Tour B starts at: " + b.getStartTime());
+        logger.info("Tour B ends at: " + b.getEndTime());
+        logger.info("Tour B duration: " + b.getDurationString());
+
         logger.info("Tours initialized");
     }
 }

@@ -17,7 +17,7 @@ class App extends React.Component {
         Address: '',
         Description: '',
       },
-      openingHours: [] // Hier wird ein leeres Array initialisiert
+      openingHours: []
     };
   }
 
@@ -26,9 +26,6 @@ class App extends React.Component {
       .then(response => response.json())
       .then(data => {
         const { name, address, description, openingHoursResponses, logoUrl } = data;
-        console.log('Erhaltene Daten:', data); // Konsolenausgabe der erhaltenen Daten
-  
-        // Speichern der Öffnungszeiten als Array im Zustand
         this.setState({
           LogoUrl: logoUrl,
           textFields: {
@@ -37,10 +34,8 @@ class App extends React.Component {
             Address: address,
             Description: description,
           },
-          openingHours: openingHoursResponses // Speichern des Arrays der Öffnungszeiten
+          openingHours: openingHoursResponses 
         });
-  
-        console.log('Aktualisierter Zustand:', this.state); // Konsolenausgabe des aktualisierten Zustands
       })
       .catch(error => {
         console.error('Fehler beim Abrufen der Daten:', error);

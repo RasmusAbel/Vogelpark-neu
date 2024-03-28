@@ -32,7 +32,7 @@ public class DeleteAttractionService {
 
         //Attraktion aus allen entsprechenden Touren entfernen,
         //damit keine Referenzen auf die zu löschende Attraktion mehr existieren
-        for(Tour t : foundAttraction.get().getTours()) {
+        for(Tour t : foundAttraction.get().getTours()){
             t.getAttractions().remove(foundAttraction.get());
             tourRepository.save(t);
         }
