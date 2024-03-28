@@ -42,7 +42,7 @@ class AttractionsPage extends React.Component {
         const url = `http://localhost:8080/attractions-by-tags/?${tagParams}`;
         fetch(url)
             .then(response => response.json())
-            .then(data => {n
+            .then(data => {
                 this.setState({ filteredAttractions: data });
             })
             .catch(error => {

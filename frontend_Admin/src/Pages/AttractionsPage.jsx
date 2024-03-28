@@ -202,7 +202,7 @@ this.setState(prevState => ({
   openingHourIdsToRemove: [...prevState.openingHourIdsToRemove, ...openingHourIdsToRemove] 
 }), () => {
   this.updateAttractionData(attraction);
-  window.location.href = 'http://localhost:8082'
+  //window.location.href = 'http://localhost:8082'
 });
   }
   
@@ -438,7 +438,7 @@ handleAddTag = (attractionName) => {
                   <p style={{ fontWeight: 'bold' }}>Alter Attraktions Name</p>
                   <input type="text" value={attraction.name} readOnly />
                   {/* Attraktionsname als bearbeitbares Textfeld */}
-                  <p style={{ fontWeight: 'bold' }}>Neuer Tour Name</p>
+                  <p style={{ fontWeight: 'bold' }}>Neuer Attraktions Name</p>
                   <input type="text" value={attraction.updatedName} onChange={(e) => this.handleAttractionChange(index, 'updatedName', e.target.value)} />
                   {/* Beschreibung als bearbeitbares Textfeld */}
                   <p style={{ fontWeight: 'bold' }}>Beschreibung</p>

@@ -135,7 +135,7 @@ this.setState(prevState => ({
   filterAttractionsToRemove: (tour.filterAttractionsToRemove && tour.filterAttractionsToRemove.length > 0) ? tour.filterAttractionsToRemove : [""], 
   }), () => {
   this.updateTourData(tour);
-  window.location.href = 'http://localhost:8082'
+  //window.location.href = 'http://localhost:8082'
 });    
   }
 

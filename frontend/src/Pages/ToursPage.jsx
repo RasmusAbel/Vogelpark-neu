@@ -74,7 +74,8 @@ class ToursPage extends React.Component {
                     <p style={{ fontWeight: 'bold', textDecoration: 'underline' }}>{tour.name}</p>
                     {/* Hier die Beschreibung */}
                     <p>{tour.description}</p>
-                    
+                    <p style={{ fontWeight: 'bold', textDecoration: 'underline' }}>Preis</p>
+                    <p>{tour.price.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</p>
                   </div>
                 </div>
 
