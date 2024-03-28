@@ -28,7 +28,8 @@ public class DeleteTourService {
         //Prüfen, ob Attraktion existiert
         if(foundTour.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(String.format("Tour %s does not exist and can't be deleted", tourName));
+                    .body(String.format("Tour '%s' existiert nicht und kann " +
+                            "daher nicht gelöscht werden.", tourName));
         }
 
         //Tour aus allen beteiligten Attraktionen entfernen,
@@ -40,6 +41,6 @@ public class DeleteTourService {
 
         //Wenn ja, dann Attraktion löschen
         tourRepository.delete(foundTour.get());
-        return ResponseEntity.ok(String.format("Tour %s successfully deleted", tourName));
+        return ResponseEntity.ok(String.format("Tour '%s' wurde gelöscht.", tourName));
     }
 }

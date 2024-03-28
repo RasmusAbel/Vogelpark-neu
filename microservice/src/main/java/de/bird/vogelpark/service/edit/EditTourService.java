@@ -33,7 +33,7 @@ public class EditTourService {
 
         if(foundTour.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format(
-                    "Tour with name %s does not exist",
+                    "Tour '%s' existiert nicht und kann daher nicht bearbeitet werden.",
                     req.currentName()
             ));
         }
@@ -168,8 +168,8 @@ public class EditTourService {
             //wird eine Fehlermeldung an den Client zurückgegeben
             if(foundAttraction.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format(
-                        "Attraction with name %s does not exist and therefore" +
-                                " cannot be added to tour %s",
+                        "Attraktion '%s' existiert nicht und kann der Tour " +
+                                "'%s' daher nicht hinzugefügt werden.",
                         name, tour.getName()
                 ));
             }

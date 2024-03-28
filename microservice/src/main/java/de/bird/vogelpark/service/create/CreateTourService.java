@@ -33,7 +33,8 @@ public class CreateTourService {
         //Stattdessen wird eine Fehlermeldung zurückgegeben.
         Optional<Tour> foundTour = tourRepository.findByName(request.name());
         if (foundTour.isPresent()) {
-            return ResponseEntity.badRequest().body(String.format("Tour %s already exists", request.name()));
+            return ResponseEntity.badRequest().body(String.format("Tour '%s' existiert bereits. " +
+                    "Es kann keine zweite Tour mit diesem Namen erzeugt werden.", request.name()));
         }
 
         //Start- und Endzeit müssen auf Gültigkeit geprüft werden, da später sonst Fehler auftreten.
@@ -62,8 +63,8 @@ public class CreateTourService {
             //wird eine Fehlermeldung an den Client zurückgegeben
             if(foundAttraction.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format(
-                        "Attraction with name %s does not exist and therefore" +
-                                " cannot be added to tour %s",
+                        "Attraktion '%s' existiert nicht und kann der Tour '%s' " +
+                                "daher nicht hinzugefügt werden.",
                         attractionName, tour.getName()
                 ));
             }
@@ -77,7 +78,7 @@ public class CreateTourService {
             tourRepository.save(tour);
         }
 
-        return ResponseEntity.ok(String.format("Tour %s successfully created", request.name()));
+        return ResponseEntity.ok(String.format("Tour '%s' wurde erzeugt.", request.name()));
     }
 
 }

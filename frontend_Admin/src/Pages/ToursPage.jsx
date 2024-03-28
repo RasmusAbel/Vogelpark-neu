@@ -186,10 +186,7 @@ this.setState(prevState => ({
         })
       })
       .then(response => {
-        if (!response.ok) {
-          throw new Error('Fehler beim Speichern der Daten');
-        }
-        console.log('Daten erfolgreich gespeichert');
+        response.text().then(text => console.log(text));
       })
       .catch(error => {
         console.error('Fehler beim Speichern der Daten:', error);
@@ -204,10 +201,7 @@ this.setState(prevState => ({
         method: 'DELETE',
       })
       .then(response => {
-        if (!response.ok) {
-          throw new Error('Fehler beim Löschen der Tour');
-        }
-        console.log('Tour erfolgreich gelöscht');
+        response.text().then(text => console.log(text));
       })
       .catch(error => {
         console.error('Fehler beim Löschen der Tour:', error);
@@ -233,10 +227,7 @@ this.setState(prevState => ({
       })
     })
     .then(response => {
-      if (!response.ok) {
-        throw new Error('Fehler beim Erstellen der Tour');
-      }
-      console.log('Tour erfolgreich erstellt');
+      response.text().then(text => console.log(text));
     })
     .catch(error => {
       console.error('Fehler beim Erstellen der Tour:', error);
@@ -276,10 +267,7 @@ fetch('http://localhost:8080/edit-tour/', {
   })
 })
 .then(response => {
-  if (!response.ok) {
-    throw new Error('Fehler beim Speichern der Daten');
-  }
-  console.log('Daten erfolgreich gespeichert');
+  response.text().then(text => console.log(text));
 })
 .catch(error => {
   console.error('Fehler beim Speichern der Daten:', error);

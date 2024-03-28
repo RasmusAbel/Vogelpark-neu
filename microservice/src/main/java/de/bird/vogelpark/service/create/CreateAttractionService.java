@@ -42,7 +42,8 @@ public class CreateAttractionService {
         //Stattdessen wird eine Fehlermeldung zurückgegeben.
         Optional<Attraction> foundAttraction = attractionRepository.findByName(req.name());
         if(foundAttraction.isPresent()) {
-            return ResponseEntity.badRequest().body(String.format("Attraction %s already exists", req.name()));
+            return ResponseEntity.badRequest().body(String.format("Attraktion '%s' existiert bereits. " +
+                    "Es kann keine zweite Attraktion mit diesem Namen erzeugt werden.", req.name()));
         }
 
         //Öffnungszeiten müssen auf Gültigkeit geprüft werden, da später sonst Fehler auftreten.
@@ -82,6 +83,6 @@ public class CreateAttractionService {
 
         attractionRepository.save(attr);
 
-        return ResponseEntity.ok(String.format("Attraction %s successfully created", req.name()));
+        return ResponseEntity.ok(String.format("Attraktion '%s' wurde erzeugt.", req.name()));
     }
 }

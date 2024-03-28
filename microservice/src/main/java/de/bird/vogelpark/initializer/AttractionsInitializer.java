@@ -39,6 +39,7 @@ public class AttractionsInitializer {
             Attraction a = new Attraction();
             a.setName("Aussichtsturm");
             a.setDescription("Gute Aussichten für Sie.");
+            a.setImageUrl("https://images.unsplash.com/photo-1694544067949-c534dca011ae?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
 
             OpeningHours aOpeningHours = new OpeningHours(
                     "Täglich",
@@ -58,6 +59,7 @@ public class AttractionsInitializer {
             Attraction b = new Attraction();
             b.setName("Flugkäfig");
             b.setDescription("Die können zwar fliegen, aber nicht abhauen.");
+            b.setImageUrl("https://images.unsplash.com/photo-1524578356049-91351c40f251?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
 
             OpeningHours bOpeningHours = new OpeningHours(
                     "Täglich",
@@ -77,6 +79,7 @@ public class AttractionsInitializer {
             Attraction c = new Attraction();
             c.setName("Lehrpfad");
             c.setDescription("Gehen Sie bitte.");
+            c.setImageUrl("https://images.unsplash.com/photo-1577849363105-277286958f92?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
 
             OpeningHours cOpeningHours = new OpeningHours(
                     "Täglich",

@@ -27,7 +27,8 @@ public class DeleteAttractionService {
         //Prüfen, ob Attraktion existiert
         if(foundAttraction.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(String.format("Attraction %s does not exist and can't be deleted", attractionName));
+                    .body(String.format("Attraktion '%s' existiert nicht und kann " +
+                            "daher nicht gelöscht werden.", attractionName));
         }
 
         //Attraktion aus allen entsprechenden Touren entfernen,
@@ -39,6 +40,6 @@ public class DeleteAttractionService {
 
         //Wenn ja, dann Attraktion löschen
         attractionRepository.delete(foundAttraction.get());
-        return ResponseEntity.ok(String.format("Attraction %s successfully deleted", attractionName));
+        return ResponseEntity.ok(String.format("Attraktion '%s' wurde gelöscht.", attractionName));
     }
 }

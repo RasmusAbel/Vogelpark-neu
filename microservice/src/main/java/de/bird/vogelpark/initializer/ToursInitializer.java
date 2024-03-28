@@ -25,12 +25,12 @@ public class ToursInitializer {
         logger.info("Initializing Tours");
 
         Tour a = new Tour();
-        a.setName("Tour A");
-        a.setDescription("Eine Tour durch den Park.");
+        a.setName("Vogelschau");
+        a.setDescription("Unsere Vogelschau ist ein Highlight für Jung und Alt!");
         a.setPriceCents(500);
         a.setStartTime(LocalTime.of(10, 0));
         a.setEndTime(LocalTime.of(12, 0));
-        a.setImageUrl("");
+        a.setImageUrl("https://images.unsplash.com/photo-1522926193341-e9ffd686c60f?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
 
         if(attractionRepository.findByName("Aussichtsturm").isPresent()) {
             Attraction aussichtsturm = attractionRepository.findByName("Aussichtsturm").get();
@@ -44,12 +44,6 @@ public class ToursInitializer {
             a.getAttractions().add(flugkaefig);
         }
 
-        if(attractionRepository.findByName("Lehrpfad").isPresent()) {
-            Attraction lehrpfad = attractionRepository.findByName("Lehrpfad").get();
-            lehrpfad.getTours().add(a);
-            a.getAttractions().add(lehrpfad);
-        }
-
         tourRepository.save(a);
 
         logger.info("Tour A starts at: " + a.getStartTime());
@@ -57,8 +51,8 @@ public class ToursInitializer {
         logger.info("Tour A duration: " + a.getDurationString());
 
         Tour b = new Tour();
-        b.setName("Tour B");
-        b.setDescription("Eine andere Tour durch den Park.");
+        b.setName("Lerntour");
+        b.setDescription("Auf unserer Lerntour erfahren Sie alles über die Tiere und Pflanzen unseres Parks.");
         b.setPriceCents(50);
         b.setStartTime(LocalTime.of(11, 0));
         b.setEndTime(LocalTime.of(15, 0));
@@ -68,12 +62,6 @@ public class ToursInitializer {
             Attraction aussichtsturm = attractionRepository.findByName("Aussichtsturm").get();
             aussichtsturm.getTours().add(b);
             b.getAttractions().add(aussichtsturm);
-        }
-
-        if(attractionRepository.findByName("Flugkäfig").isPresent()) {
-            Attraction flugkaefig = attractionRepository.findByName("Flugkäfig").get();
-            flugkaefig.getTours().add(b);
-            b.getAttractions().add(flugkaefig);
         }
 
         if(attractionRepository.findByName("Lehrpfad").isPresent()) {

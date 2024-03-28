@@ -236,10 +236,7 @@ this.setState(prevState => ({
       })
     })
     .then(response => {
-      if (!response.ok) {
-        throw new Error('Fehler beim Speichern der Daten');
-      }
-      console.log('Daten erfolgreich gespeichert');
+      response.text().then(text => {alert(text);});
     })
     .catch(error => {
       console.error('Fehler beim Speichern der Daten:', error);
@@ -260,10 +257,7 @@ handleAddTag = (attractionName) => {
       })
     })
     .then(response => {
-      if (!response.ok) {
-        throw new Error('Fehler beim Speichern der Daten');
-      }
-      console.log('Daten erfolgreich gespeichert');
+      response.text().then(text => {alert(text);});
     })
     .catch(error => {
       console.error('Fehler beim Speichern der Daten:', error);
@@ -306,10 +300,7 @@ handleAddTag = (attractionName) => {
       })
     })
     .then(response => {
-      if (!response.ok) {
-        throw new Error('Fehler beim Speichern der Daten');
-      }
-      console.log('Daten erfolgreich gespeichert');
+      response.text().then(text => {alert(text);});
     })
     .catch(error => {
       console.error('Fehler beim Speichern der Daten:', error);
@@ -339,10 +330,7 @@ handleAddTag = (attractionName) => {
       })
     })
     .then(response => {
-      if (!response.ok) {
-        throw new Error('Fehler beim Speichern der Daten');
-      }
-      console.log('Daten erfolgreich gespeichert');
+      response.text().then(text => {alert(text);});
       this.setState(prevState => ({
         attractions: [
           ...prevState.attractions,
@@ -373,50 +361,38 @@ handleAddTag = (attractionName) => {
         method: 'DELETE',
       })
       .then(response => {
-        if (!response.ok) {
-          throw new Error('Fehler beim Löschen der Attraktion');
-        }
-        console.log('Attraktion erfolgreich gelöscht');
-      })
-      .catch(error => {
-        console.error('Fehler beim Löschen der Attraktion:', error);
+        response.text().then(text => {alert(text);});
       });
   }
 
   //Attraktion hinzufügen
   handleAddNewAttraction = () => {
     fetch('http://localhost:8080/create-attraction/', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    name: 'Attraktions Name',
-    description: 'Beschreibung der Attraktion',
-    openingHours: [
-      {
-        weekday: 'Wochentag',
-        startTimeHour: 9,
-        startTimeMinute: 0,
-        endTimeHour: 17,
-        endTimeMinute: 0
-      }
-    ],
-    filterTags: [
-      'Tag1',
-      'Tag2'
-    ]
-  })
-})
-.then(response => {
-  if (!response.ok) {
-    throw new Error('Fehler beim Erstellen der Attraktion');
-  }
-  console.log('Attraktion erfolgreich erstellt');
-})
-.catch(error => {
-  console.error('Fehler beim Erstellen der Attraktion:', error);
-});
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: 'Attraktions Name',
+        description: 'Beschreibung der Attraktion',
+        openingHours: [
+          {
+            weekday: 'Wochentag',
+            startTimeHour: 9,
+            startTimeMinute: 0,
+            endTimeHour: 17,
+            endTimeMinute: 0
+          }
+        ],
+        filterTags: [
+          'Tag1',
+          'Tag2'
+        ]
+      })
+    })
+    .then(response => {
+      response.text().then(text => {alert(text);});
+    });
 }
 
   render() {

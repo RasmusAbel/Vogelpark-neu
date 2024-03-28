@@ -35,7 +35,7 @@ public class EditAttractionService {
         //Fehlermeldung zurückgeben, wenn versucht wird, eine Attraktion zu bearbeiten, die nicht existiert
         if(foundAttraction.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(String.format(
-                            "Attraction with name %s does not exist",
+                            "Attraktion '%s' existiert nicht und kann daher nicht bearbeitet werden.",
                             editAttractionRequest.currentName()
             ));
         }
@@ -63,7 +63,7 @@ public class EditAttractionService {
         attractionRepository.save(attr);
 
         return ResponseEntity.ok(String.format(
-                "Attraction %s successfully edited",
+                "Attraktion '%s' wurde erfolgreich bearbeitet.",
                 editAttractionRequest.currentName()
         ));
     }

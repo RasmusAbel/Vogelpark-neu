@@ -28,7 +28,7 @@ public class CreateTagService {
         //Prüfen, ob bereits ein FilterTag mit dem Namen existiert
         if(filterTagRepository.findByName(tagName).isPresent()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(String.format("Tag %s already exists", tagName));
+                    .body(String.format("Tag '%s' existiert bereits.", tagName));
         }
 
         //Ansonsten neuen Tag erzeugen
@@ -36,6 +36,6 @@ public class CreateTagService {
         tag.setName(tagName);
         filterTagRepository.save(tag);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(String.format("Tag %s successfully created", tagName));
+                .body(String.format("Tag '%s' wurde erzeugt.", tagName));
     }
 }

@@ -48,7 +48,7 @@ public class EditBirdParkBasicInfoService {
 
         birdParkBasicDataRepository.save(birdParkBasicInfo);
 
-        return ResponseEntity.ok("Bird park basic info successfully edited");
+        return ResponseEntity.ok("Grunddaten des Vogelparks wurden erfolgreich bearbeitet.");
     }
 
     /**

@@ -105,12 +105,14 @@ class App extends React.Component {
         },
         body: JSON.stringify(requestBody)
       });
-      if (response.ok) {
+      response.text().then(text => alert(text));
+      /*if (response.ok) {
         console.log('Daten erfolgreich gespeichert.');
         this.setState({ isEditing: false });
       } else {
         console.error('Fehler beim Speichern der Daten:', response.statusText);
       }
+      */
     } catch (error) {
       console.error('Fehler beim Speichern der Daten:', error);
     }
